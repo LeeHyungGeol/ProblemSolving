@@ -1,11 +1,10 @@
+import java.util.stream.*;
+
 class Solution {
     public int solution(int n) {
-        int answer = 0;
-        boolean flag = n % 2 == 0 ? true : false;
-        while(n > 0) {
-            answer = flag ? answer + (n*n) : answer + n;
-            n -= 2;
+        if(n%2 == 0) {
+            return IntStream.rangeClosed(1,n).filter(i->i%2==0).map(i->(int) Math.pow(i,2)).sum();
         }
-        return answer;
+        return IntStream.rangeClosed(1,n).filter(i->i%2==1).sum();
     }
 }
