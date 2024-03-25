@@ -1,10 +1,13 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
 class Solution {
-    public int[] solution(int[] arr, int[][] queries) {
-        for(int i = 0; i < queries.length; ++i) {
-            int tmp = arr[queries[i][0]];
-            arr[queries[i][0]] = arr[queries[i][1]];
-            arr[queries[i][1]] = tmp;
+    public List<Integer> solution(int[] arr, int[][] queries) {
+        List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());
+
+        for (int[] query : queries) {
+            Collections.swap(list, query[0], query[1]);
         }
-        return arr;
+        return list;
     }
 }
