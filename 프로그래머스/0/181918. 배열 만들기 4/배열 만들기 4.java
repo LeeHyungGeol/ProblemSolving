@@ -5,10 +5,11 @@ class Solution {
         Stack<Integer> answer = new Stack<>();
         int i = 0;
         while(i < arr.length) {
-            if (answer.size() == 0) {answer.push(arr[i]); ++i;}
-            else {
-                if(answer.peek() < arr[i]) {answer.push(arr[i]); ++i;}
-                else answer.pop();
+            if (answer.size() == 0 || answer.peek() < arr[i]) {
+                answer.push(arr[i]); 
+                ++i;
+            } else if (answer.peek() >= arr[i]) {
+                answer.pop();
             }
         }
         return answer;
