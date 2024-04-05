@@ -10,6 +10,9 @@ class Solution {
 //                 .max(Long::compare)
 //                 .orElse(0L);
         
+//        return Arrays.stream(strArr).collect(Collectors.groupingBy(String::length)).values().stream().max(Comparator.comparingInt(List::size)).orElse(Collections.emptyList()).size();
+
+        
         Map<Integer, Integer> lengthCountMap = new HashMap<>();
         int answer = 0;
 
