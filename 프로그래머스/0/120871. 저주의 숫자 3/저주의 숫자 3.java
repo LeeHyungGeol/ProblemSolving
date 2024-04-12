@@ -4,8 +4,8 @@ class Solution {
         
         for(int i = 1; i <= n; ++i) {
             ++answer;
-            if (answer%3==0 || String.valueOf(answer).contains("3"))
-                --i;
+            if (i%3==0 || String.valueOf(i).contains("3"))
+                ++n;
         }
         return answer;
     }
