@@ -14,6 +14,11 @@ class Solution {
         // }
         // return answer;
         
+        // for(String b : babbling){
+        //     if(b.matches("^(aya(?!aya)|ye(?!ye)|woo(?!woo)|ma(?!ma))+$"))
+        //         ++answer;
+        // }
+        
         int answer = 0;
         
         for (String b : babbling) {
