@@ -7,6 +7,10 @@ class Solution {
         int a = sc.nextInt();
         int b = sc.nextInt();
 
-        IntStream.range(0, b).forEach(i -> System.out.println("*".repeat(a)));
+        // IntStream.range(0, b).forEach(i -> System.out.println("*".repeat(a)));
+        
+        StringBuilder sb = new StringBuilder();
+        IntStream.range(0, a).forEach(s -> sb.append("*"));
+        IntStream.range(0, b).forEach(s -> System.out.println(sb.toString()));
     }
 }
