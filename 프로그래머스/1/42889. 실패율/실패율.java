@@ -20,7 +20,7 @@ class Solution {
     }
     
     public int[] solution(int N, int[] stages) {
-        List<Failure> list = new ArrayList<>();
+        List<Failure> list = new LinkedList<>();
         int[] answer = new int[N];
         
         for (int i = 1; i <= N; ++i) {
@@ -43,8 +43,7 @@ class Solution {
             }
         });
         
-        int i = 0;
-        for (Failure f : list) answer[i++] = f.getStageNumber();
+        for (int i = 0; i < list.size(); ++i) answer[i] = list.get(i).getStageNumber();
 
         return answer;
     }
