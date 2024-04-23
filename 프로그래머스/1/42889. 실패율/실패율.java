@@ -45,7 +45,7 @@ class Solution {
             public int compare(Failure o1, Failure o2) {
                 if (o1.getFail() < o2.getFail()) return 1;
                 else if (o1.getFail() > o2.getFail()) return -1;
-                else return o1.getStageNumber() - o2.getStageNumber();
+                else return 0;
             }
         });
         
