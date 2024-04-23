@@ -1,5 +1,11 @@
 import java.util.*;
 
+// 뿌듯 ^ㅡ^
+// [두 수의 비교 결과에 따른 작동 방식]
+
+// 음수일 경우 : 두 원소의 위치를 교환 안함
+
+// 양수일 경우 : 두 원소의 위치를 교환 함
 class Solution {
     class Failure {
         private int stageNumber;
