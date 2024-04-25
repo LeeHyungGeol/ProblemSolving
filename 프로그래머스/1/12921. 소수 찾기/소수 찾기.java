@@ -1,3 +1,6 @@
+// 효과적으로 소수 찾기
+// https://myjamong.tistory.com/139
+
 import java.util.stream.IntStream;
 
 class Solution {
