@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.util.*;
 
+// 모든 달은 28일까지 있다고 가정하였으므로 LocalDateTime 없이도 1달을 28일로 계산하여 날짜 계산을 할 수 있다.
 class Solution {
     public int[] solution(String today, String[] terms, String[] privacies) {
         List<Integer> answer = new ArrayList<>();
