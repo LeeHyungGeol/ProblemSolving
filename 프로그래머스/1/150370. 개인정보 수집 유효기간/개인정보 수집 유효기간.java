@@ -25,7 +25,7 @@ class Solution {
         return answer.stream().mapToInt(i->i).toArray();
     }
     
-    public LocalDateTime getDate(String[] date) {
+    private LocalDateTime getDate(String[] date) {
         return LocalDateTime.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]),0,0);
     }
 }
