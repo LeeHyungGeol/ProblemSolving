@@ -2,11 +2,7 @@ class Solution {
     public int[] solution(String s) {
         int[] answer = new int[2];
         
-        while (true) {
-            if(s.equals("1")) {
-                break;
-            }
-            
+        while (!s.equals("1")) {
             int before = s.length();
             s = s.replace("0","");
             int zeroCnt = before - s.length();
