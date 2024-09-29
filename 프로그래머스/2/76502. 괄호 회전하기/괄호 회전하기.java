@@ -10,53 +10,50 @@
 import java.util.*;
 
 class Solution {
-    Map<Character, Character> map;
+    Map<Character, Character> map = new HashMap<>(){{
+        put('(', ')');
+        put('{', '}');
+        put('[', ']');
+    }};
     
     public int solution(String s) {
         int answer = 0;
-        int size = s.length();
-        StringBuffer sb = new StringBuffer(s);
-        map = new HashMap<>();
-        map.put('(', ')');
-        map.put('{', '}');
-        map.put('[', ']');
-
-        for(int i = 0; i < size; ++i) {
-            boolean flag = isProper(sb);
-            if(flag) {
+        StringBuilder sb = new StringBuilder(s);
+        
+        for (int i = 0; i < s.length(); ++i) {
+            if (isProper(sb)) {
                 ++answer;
             }
-            sb = turn(sb, size);
+            sb = rotate(sb);
         }
+        
         return answer;
     }
-    
-    public StringBuffer turn(StringBuffer sb, int size) {
-        return sb.append(sb.charAt(0)).deleteCharAt(0);
-    }
-    
-    public boolean isProper(StringBuffer sb) {
-        String s = sb.toString();
+
+    private boolean isProper(StringBuilder sb) {
         Stack<Character> stack = new Stack<>();
         
-        for(int i = 0; i < s.length(); ++i) {
-            char c = s.charAt(i);
-            
-            if(c == '[' || c == '{' || c == '(') {
+        for (int i = 0; i < sb.length(); ++i) {
+            char c = sb.charAt(i);
+            if (c == '(' || c == '{' || c == '[') {
                 stack.push(c);
-            }
-            else {
-                if(stack.isEmpty() || map.get(stack.peek()) != c) {
+            } else {
+                if (stack.isEmpty() || map.get(stack.peek()) != c) {
                     return false;
+                } else {
+                    stack.pop();
                 }
-                stack.pop();
             }
         }
         
-        if(stack.isEmpty()) {
+        if (stack.isEmpty()) {
             return true;
         }
         
         return false;
+    }
+    
+    private StringBuilder rotate(StringBuilder sb) {
+        return sb.append(sb.charAt(0)).deleteCharAt(0);
     }
 }
