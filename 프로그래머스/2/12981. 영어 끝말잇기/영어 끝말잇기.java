@@ -1,25 +1,24 @@
-import java.util.HashSet;
+import java.util.*;
 
 class Solution {
-
-
     public int[] solution(int n, String[] words) {
-      int[] answer = { 0, 0 };
-        char chEnd = words[0].charAt(words[0].length() - 1);
-        char chStart;
-        HashSet<String> log = new HashSet<>();
-        log.add(words[0]);
-        for (int i = 1; i < words.length; i++) {
-            chStart = words[i].charAt(0);
-            log.add(words[i]);
-            if (chEnd != chStart || log.size() != i + 1) {
-                answer[0] = (i % n)+1;
-                answer[1] = (i / n) + 1;
+        int[] answer = new int[2];
+        HashSet<String> set = new HashSet<>();     
+        String prev = "";
+        
+        set.add(words[0]);
+        
+        for(int i = 1; i < words.length; ++i) {
+            prev = words[i-1];
+            
+            if(set.contains(words[i]) || prev.charAt(prev.length()-1) != words[i].charAt(0)){
+                answer[0] = i % n + 1;
+                answer[1] = (i / n + 1);
                 break;
             }
-
-            chEnd = words[i].charAt(words[i].length() - 1);
+            set.add(words[i]);
         }
+        
         return answer;
     }
 }
