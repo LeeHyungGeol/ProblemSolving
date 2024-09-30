@@ -1,10 +1,10 @@
 # [level 2] 의상 - 42578 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42578) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42578#qna) 
 
 ### 성능 요약
 
-메모리: 53.4 MB, 시간: 0.10 ms
+메모리: 70.7 MB, 시간: 0.61 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 08월 22일 20:12:08
+2024년 10월 01일 01:23:52
 
 ### 문제 설명
 
