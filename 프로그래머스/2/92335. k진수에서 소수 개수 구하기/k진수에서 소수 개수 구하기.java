@@ -4,9 +4,9 @@
 class Solution {
     public int solution(int n, int k) {
         int answer = 0;
-        String integerToString = Integer.toString(n,k);
+        String[] arr = Integer.toString(n,k).split("0");
     
-        for (String s : integerToString.split("0")) {
+        for (String s : arr) {
             if (s.equals("")) continue;
             long l = Long.parseLong(s);
             if (isPrime(l)) ++answer;
@@ -15,11 +15,11 @@ class Solution {
         return answer;
     }
     
-    public boolean isPrime (long a){
-        if (a < 2) return false;
+    public boolean isPrime (long l){
+        if (l < 2) return false;
         
-        for(int i = 2; i <= Math.sqrt(a); ++i){
-            if(a%i == 0) {
+        for(int i = 2; i <= Math.sqrt(l); ++i){
+            if(l%i == 0) {
                 return false;
             }
         }
