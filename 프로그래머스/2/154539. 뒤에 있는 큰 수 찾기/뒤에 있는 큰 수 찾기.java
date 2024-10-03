@@ -28,16 +28,11 @@ class Solution {
         
         for (int i = 0; i < numbers.length; ++i) {
             int number = numbers[i];
-            
-            if (stack.isEmpty()) {
-                stack.push(new Node(i, number));
-            } else {
-                while (!stack.isEmpty() && number > stack.peek().getValue()) {
-                    Node node = stack.pop();
-                    answer[node.getIndex()] = number;
-                }
-                stack.push(new Node(i, number));
+            while (!stack.isEmpty() && number > stack.peek().getValue()) {
+                Node node = stack.pop();
+                answer[node.getIndex()] = number;
             }
+            stack.push(new Node(i, number));   
         }
         
         while (!stack.isEmpty()) {
