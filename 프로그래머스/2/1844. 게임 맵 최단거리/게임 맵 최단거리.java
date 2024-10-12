@@ -1,71 +1,48 @@
 import java.util.*;
 
 class Solution {
-    int[] dx = {-1,1,0,0};
-    int[] dy = {0,0,-1,1};
+    public static final int[] DIRECTION_X = {-1,1,0,0};
+    public static final int[] DIRECTION_Y = {0,0,-1,1};
     
     public int solution(int[][] maps) {
-        int answer = 0;
-        
-        answer = bfs(0,0, maps);
-        
-        return answer;
+        return bfs(maps);
     }
     
-    public int bfs(int x, int y, int[][] maps) {
+    private int bfs(int[][] maps) {
         int n = maps.length;
         int m = maps[0].length;
-        int[][] d = new int[n][m];     
+        int[][] arr = new int[n][m];
         boolean[][] visited = new boolean[n][m];
-        Queue<Node> q = new LinkedList<>();
+        Queue<int[]> queue = new LinkedList<>();
         
-        q.add(new Node(x,y));
-        visited[x][y] = true;
-        d[x][y] = 1;
+        queue.add(new int[]{0,0});
+        visited[0][0] = true;
+        arr[0][0] = 1;
         
-        while(!q.isEmpty()) {
-            int curX = q.peek().getX();
-            int curY = q.peek().getY();
+        while (!queue.isEmpty()) {
+            int currentX = queue.peek()[0];
+            int currentY = queue.peek()[1];
+                    
+            queue.poll();
             
-            q.poll();
-            
-            for(int i = 0; i < 4; ++i) {
-                int nx = curX + dx[i];
-                int ny = curY + dy[i];
+            for (int i = 0; i < 4; ++i) {
+                int newX = currentX + DIRECTION_X[i];
+                int newY = currentY + DIRECTION_Y[i];
                 
-                if(0 <= nx && nx < n && 0 <= ny && ny < m) {
-                    if(!visited[nx][ny] && maps[nx][ny] == 1) {
-                        visited[nx][ny] = true;
-                        d[nx][ny] = d[curX][curY] + 1;
-                        q.add(new Node(nx,ny));
+                if (0 <= newX && newX < n && 0 <= newY && newY < m) {
+                   if (maps[newX][newY] == 1 && !visited[newX][newY]) {    
+                        visited[newX][newY] = true;
+                        arr[newX][newY] = arr[currentX][currentY] + 1;
+                        queue.add(new int[]{newX, newY});
                     }
                 }
             }
         }
         
-        if(d[n-1][m-1] == 0) {
+        if (arr[n-1][m-1] == 0) {
             return -1;
         }
-        else {
-            return d[n-1][m-1];
-        }
-    }
-}
-
-class Node {
-    private int x;
-    private int y;
-    
-    public Node(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-    public int getX() {
-        return this.x;
-    }
-    
-    public int getY() {
-        return this.y;
-    }
+        
+        return arr[n-1][m-1];
+    } 
 }
