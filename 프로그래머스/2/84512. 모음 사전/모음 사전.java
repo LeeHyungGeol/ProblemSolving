@@ -1,36 +1,27 @@
 import java.util.*;
 
 class Solution {
-    static List<String> Dict = new ArrayList<>();
-    static String Vowel = "AEIOU";
-    
+    private static String[] vowel = {"A", "E", "I", "O", "U"};
+    private static Map<String, Integer> dictionary = new HashMap<>();
+    private static int index = 0;
+
     public int solution(String word) {
-        int answer = 0;
-        
-        StringBuilder sb = new StringBuilder("");
-        
-        dfs(sb, 0);
-        
-        for(int i = 0; i < Dict.size(); ++i) {
-            if(Dict.get(i).equals(word)) {
-                answer = i+1;
-                break;
-            }
-        }
-        
-        return answer;
+        dfs(new StringBuilder());
+        return dictionary.get(word);
     }
     
-    private void dfs(StringBuilder w, int cnt) {
-        if(cnt == 5) {
+    private void dfs(StringBuilder word) {
+        if (word.length() == 5) {
             return;
         }
         
-        for(int i = 0; i < 5; ++i) {
-            w.append(Vowel.charAt(i));
-            Dict.add(w.toString());
-            dfs(w, cnt + 1);
-            w.deleteCharAt(w.length()-1);
+        for (int i = 0; i < 5; ++i) {
+            word.append(vowel[i]);
+            if (!dictionary.containsKey(word.toString())) {
+                dictionary.put(word.toString(), ++index);
+            }
+            dfs(word);
+            word.deleteCharAt(word.length()-1);
         }
     }
 }
