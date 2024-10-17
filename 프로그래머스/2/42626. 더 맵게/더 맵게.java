@@ -1,39 +1,55 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] scoville, int K) {
-        int answer = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+    
+    static class Node implements Comparable<Node> {
+        private int value;
         
-        for(int i = 0; i < scoville.length; ++i) {
-            pq.offer(scoville[i]);
+        public Node(int value) {
+            this.value = value;
         }
         
-        boolean flag = false;
+        public int getValue() {
+            return this.value;
+        }
         
-        while(true) {
-            if(pq.peek() >= K) {
+        @Override
+        public int compareTo(Node other) {
+            return Integer.compare(this.value, other.value);
+        }
+    }
+    
+    public int solution(int[] scoville, int K) {
+        int answer = 0;
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        
+        for (int s : scoville) {
+            pq.offer(new Node(s));
+        }
+        
+        while (!(pq.peek().getValue() >= K)) {
+            if (pq.size() < 2) {
+                answer = -1;
                 break;
             }
-            if(pq.size() < 2) {
-                flag = true;
+            
+            int first = pq.poll().getValue();
+            int second = pq.poll().getValue();
+            
+            if (second == 0) {
+                answer = -1;
                 break;
             }
-            
-            int min = pq.poll();
-            int secondMin = pq.poll();
-            
-            int newMin = min + 2*secondMin;
-            
-            pq.offer(newMin);
-            
+                        
+            pq.offer(new Node(mix(first, second)));
             ++answer;
         }
         
-        if(flag) {
-            return -1;
-        }
         
         return answer;
+    }
+    
+    private int mix(int first, int second) {
+        return first + (second * 2);
     }
 }
