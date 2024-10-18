@@ -1,47 +1,31 @@
+// PriorityQueue 는 기본적으로 오름차순 정렬
 import java.util.*;
 
 class Solution {
     
-    static class Node implements Comparable<Node> {
-        private int value;
-        
-        public Node(int value) {
-            this.value = value;
-        }
-        
-        public int getValue() {
-            return this.value;
-        }
-        
-        @Override
-        public int compareTo(Node other) {
-            return Integer.compare(this.value, other.value);
-        }
-    }
-    
     public int solution(int[] scoville, int K) {
         int answer = 0;
-        PriorityQueue<Node> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         
         for (int s : scoville) {
-            pq.offer(new Node(s));
+            pq.offer(s);
         }
         
-        while (!(pq.peek().getValue() >= K)) {
+        while (!(pq.peek() >= K)) {
             if (pq.size() < 2) {
                 answer = -1;
                 break;
             }
             
-            int first = pq.poll().getValue();
-            int second = pq.poll().getValue();
+            int first = pq.poll();
+            int second = pq.poll();
             
             if (second == 0) {
                 answer = -1;
                 break;
             }
                         
-            pq.offer(new Node(mix(first, second)));
+            pq.offer(mix(first, second));
             ++answer;
         }
         
