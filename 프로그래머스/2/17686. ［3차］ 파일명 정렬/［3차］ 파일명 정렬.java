@@ -6,32 +6,24 @@ class Solution {
         private String head;
         private int number;
         private String tail;
-        private int index;
         
-        public Node(String original, String head, int number, String tail, int index) {
+        public Node(String original, String head, int number, String tail) {
             this.original = original;
             this.head = head;
             this.number = number;
             this.tail = tail;
-            this.index = index;
         }
         
         @Override
         public int compareTo(Node other) {
-            // HEAD 비교 (대소문자 무시)
+            // HEAD 비교 (대소문자 구분 없이)
             int headComparison = this.head.compareToIgnoreCase(other.head);
             if (headComparison != 0) {
                 return headComparison;
             }
 
-            // NUMBER 비교 (숫자 크기 비교)
-            int numberComparison = Integer.compare(this.number, other.number);
-            if (numberComparison != 0) {
-                return numberComparison;
-            }
-
-            // 입력 순서를 유지하기 위한 index 비교
-            return Integer.compare(this.index, other.index);
+            // NUMBER 비교
+            return Integer.compare(this.number, other.number);
         }
 
         public String getOriginal() {
@@ -68,7 +60,7 @@ class Solution {
                 number.append("0");
             }
             
-            list.add(new Node(files[i], head.toString(), Integer.parseInt(number.toString()), tail.toString(), i));
+            list.add(new Node(files[i], head.toString(), Integer.parseInt(number.toString()), tail.toString()));
         }
         
         Collections.sort(list);
