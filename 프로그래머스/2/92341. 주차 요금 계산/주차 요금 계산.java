@@ -1,67 +1,68 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(int[] fees, String[] records) {
-        int[] answer = {};
-        Map<String, Integer> map1 = new HashMap<String, Integer>();
-        Map<String, Integer> map2 = new HashMap<String, Integer>();
-        
-        int baseTime = fees[0];
-        int baseFee = fees[1];
-        int partTime = fees[2];
-        int partFee = fees[3];
+    public static int END_TIME = 1439;
+    public static int BASE_TIME = 0;
+    public static int BASE_FEE = 0;
+    public static int UNIT_TIME = 0;
+    public static int UNIT_FEE = 0;
+    
+    public List<Integer> solution(int[] fees, String[] records) {
+        BASE_TIME = fees[0];
+        BASE_FEE = fees[1];
+        UNIT_TIME = fees[2];
+        UNIT_FEE = fees[3];
+        Map<String, Integer> in = new TreeMap<>();
+        Map<String, Integer> inOut = new TreeMap<>();
         
         for (String record : records) {
-            String[] tmp = record.split(" ");
-            int time = getRealTime(tmp[0]);
-            String car = tmp[1];
-            String io = tmp[2];
+            String[] temp = record.split(" ");
+            int time = timeToInt(temp[0]);
+            String carNumber = temp[1];
+            String inOrOut = temp[2];
             
-            if (io.equals("IN")) {
-                map1.put(car, time);
+            if (inOrOut.equals("IN")) {
+                in.put(carNumber, time);
             } else {
-                int carTime1 = map1.get(car);
-                map1.remove(car);
-                if (map2.containsKey(car)) {
-                    int carTime2 = map2.get(car);
-                    map2.replace(car, carTime2 + time - carTime1);    
+                int startTime = in.get(carNumber);
+                in.remove(carNumber);
+                
+                if (inOut.containsKey(carNumber)) {
+                    int currentTotalTime = inOut.get(carNumber);
+                    inOut.replace(carNumber, currentTotalTime + (time-startTime));
                 } else {
-                    map2.put(car, time - carTime1);
-                }   
+                    inOut.put(carNumber, time-startTime);
+                }
             }
         }
-        int lastTime = 1439;
-        for (String car : map1.keySet()) {
-            int carTime1 = map1.get(car);
-            if (map2.containsKey(car)) {
-                    int carTime2 = map2.get(car);
-                    map2.replace(car, carTime2 + lastTime - carTime1);    
-                } else {
-                    map2.put(car, lastTime - carTime1);
-            }   
-        }
-        Object[] sortKey = map2.keySet().toArray();	
-		Arrays.sort(sortKey);
-        answer = new int[sortKey.length];
-
-        for (int i = 0; i<answer.length; i++) {
-            int result = baseFee;
-            String car = String.valueOf(sortKey[i]);
-            
-            int val = map2.get(car);
-            if (val > baseTime) {
-                result = (int) (baseFee + Math.ceil((double)(val-baseTime)/partTime) * partFee);
+        
+        for (String carNumber : in.keySet()) {
+            int startTime = in.get(carNumber);
+            if (inOut.containsKey(carNumber)) {
+                int currentTotalTime = inOut.get(carNumber);
+                inOut.replace(carNumber, currentTotalTime + (END_TIME-startTime));
+            } else {
+                inOut.put(carNumber, END_TIME-startTime);
             }
-            answer[i] = result;
+        }
+        
+        List<Integer> answer = new ArrayList<>();
+        for (String carNumber : inOut.keySet()) {
+            answer.add(getFee(inOut.get(carNumber)));
         }
         
         return answer;
     }
     
-    public int getRealTime(String time) {
-        String[] tmp = time.split(":");
-        int hour = Integer.parseInt(tmp[0]) * 60;
-        int minute = Integer.parseInt(tmp[1]);
-        return hour + minute;
+    private int timeToInt(String time) {
+        String[] temp = time.split(":");
+        return (Integer.parseInt(temp[0]) * 60) + Integer.parseInt(temp[1]);
+    }
+    
+    private int getFee(int time) {
+        if (time > BASE_TIME) {
+            return (int) (BASE_FEE + (Math.ceil((double)(time-BASE_TIME)/UNIT_TIME) * UNIT_FEE));
+        }
+        return BASE_FEE;
     }
 }
