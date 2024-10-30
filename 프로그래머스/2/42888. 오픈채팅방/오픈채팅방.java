@@ -1,30 +1,39 @@
 import java.util.*;
 
 class Solution {
-    public ArrayList<String> solution(String[] record) {
-        ArrayList<String> answer = new ArrayList<>();
+    public List<String> solution(String[] record) {
+        List<String> answer = new ArrayList<>();
         Map<String, String> map = new HashMap<>();
         
-        for(String r : record) {
-            String[] splits = r.split(" ");
+        for (String r : record) {
+            String[] temp = r.split(" ");
+            String command = temp[0];
+            String userId = temp[1];
             
-            if(splits[0].equals("Enter") || splits[0].equals("Change")) {
-                map.put(splits[1], splits[2]);
+            if (!command.equals("Leave")) {
+                String nickname = temp[2];
+        
+                if (command.equals("Change")) {
+                    map.replace(userId, nickname);
+                } else {
+                    map.put(userId, nickname);
+                }
             }
         }
         
-        for(String r : record) {
-            String[] splits = r.split(" ");
+        for (String r : record) {
+            String[] temp = r.split(" ");
+            String command = temp[0];
+            String userId = temp[1];
             
-            if(splits[0].equals("Enter")) {
-                String temp = map.get(splits[1]) + "님이 들어왔습니다.";
-                answer.add(temp);
+            if (command.equals("Enter")) {
+                answer.add(map.get(userId) + "님이 들어왔습니다.");
             }
-            else if(splits[0].equals("Leave")) {
-                String temp = map.get(splits[1]) + "님이 나갔습니다.";
-                answer.add(temp);
+            if (command.equals("Leave")) {
+                answer.add(map.get(userId) + "님이 나갔습니다.");
             }
         }
+        
         
         return answer;
     }
