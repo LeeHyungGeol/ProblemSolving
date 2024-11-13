@@ -4,11 +4,11 @@ class Solution {
     private static final String NONE_MATCHING = "(None)";
     private static Map<String, String> musicalNotes = new HashMap<>(){{
         put("C#", "c");
-        put("D#", "d");
-        put("F#", "f");
-        put("G#", "g");
-        put("A#", "%"); 
-        put("B#", "b");
+        put("D#", "@");
+        put("F#", "*");
+        put("G#", "$");
+        put("A#", "a"); 
+        put("B#", "%");
     }};
     
     public String solution(String m, String[] musicinfos) {
