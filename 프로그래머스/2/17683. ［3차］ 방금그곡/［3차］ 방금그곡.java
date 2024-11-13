@@ -7,7 +7,7 @@ class Solution {
         put("D#", "d");
         put("F#", "f");
         put("G#", "g");
-        put("A#", "a"); 
+        put("A#", "%"); 
         put("B#", "b");
     }};
     
