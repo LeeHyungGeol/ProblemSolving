@@ -1,22 +1,21 @@
+import java.util.*;
+
 class Solution {
     public String solution(String p) {
         String answer = "";
         
-        if(p.length() == 0) {
-            return answer;
+        if (p.isEmpty()) {
+            return "";
         }
         
-        int index = isBalanced(p);
-        String u = p.substring(0, index + 1);
-        String v = p.substring(index + 1);
+        int index = splitToBalancedString(p);
+        String u = p.substring(0, index+1);
+        String v = p.substring(index+1);
         
-        if(isProper(u)) {
-            return u + solution(v);
-        }
-        else {
-            answer += '(';
-            answer += solution(v);
-            answer += ')';
+        if (isProper(u)) {
+            return u+solution(v);
+        } else {
+            answer = '(' + solution(v) + ')';
             u = u.substring(1, u.length() - 1);
             
             String temp = "";
@@ -34,39 +33,39 @@ class Solution {
         }
     }
     
-    public int isBalanced(String str) {
-        int cnt = 0;
+    private int splitToBalancedString(String w) {
+        int count = 0, index = 0;
         
-        for(int i = 0; i < str.length(); ++i) {
-            if(str.charAt(i) == '(') {
-                ++cnt;
+        for (int i = 0; i < w.length(); ++i) {
+            if (w.charAt(i) == '(') {
+                ++count;
             }
             else {
-                --cnt;
+                --count;
             }
-            if(cnt == 0) {
-                return i;
+            if (count == 0) {
+                index = i;
+                break;
             }
         }
         
-        return -1;
+        return index;
     }
     
-    public boolean isProper(String str) {
-        int cnt = 0;
+    private boolean isProper(String w) {
+        int count = 0;
         
-        for(int i = 0; i < str.length(); ++i) {
-            if(str.charAt(i) == '(') {
-                ++cnt;
+        for (int i = 0; i < w.length(); ++i) {
+            if (w.charAt(i) == '(') {
+                ++count;
             }
             else {
-                --cnt;
-                if(cnt == 0) {
+                --count;
+                if (count == 0) {
                     return true;
                 }
-            }        
+            }
         }
-        
         return false;
     }
 }
