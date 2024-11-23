@@ -54,17 +54,4 @@ class Solution {
             dfs(discountCases, count+1, size);
         }
     }
-    
-    private int getDiscountRate(int[] cases) {
-        int rate = 0;
-        for (int i = 0; i < cases.length; ++i) {
-            if (cases[i] > 0) {
-                rate = DiscountRates[i];
-                --cases[i];
-                break;
-            }
-        }
-        
-        return rate;
-    }
 }
