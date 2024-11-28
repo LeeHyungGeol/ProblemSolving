@@ -5,7 +5,6 @@ class Solution {
         int[] answer = new int[id_list.length];
         Map<String, Integer> reportedCounts = new HashMap<>();
         Map<String, Set<String>> reportedInfo = new HashMap<>();
-        Map<String, Set<String>> banned = new HashMap<>();
         
         for (String r : report) {
             String[] split = r.split(" ");
