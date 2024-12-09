@@ -3,7 +3,11 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] operations) {
         Queue<Integer> min = new PriorityQueue<>();
-        Queue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());
+        Queue<Integer> max = new PriorityQueue<>(new Comparator<Integer>(){
+            public int compare(Integer a, Integer b) {
+                return b-a;
+            }
+        });
 
         for (String operation : operations) {
             String[] split = operation.split(" ");
