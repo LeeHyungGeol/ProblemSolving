@@ -10,20 +10,13 @@ class Solution {
         
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {
-                int up = 0, left = 0;
-                if (i-1 < 0 || map[i-1][j] == -1) {
-                    up = 0;
-                } else {
-                    up = map[i-1][j];
+                if (map[i][j] == -1) continue;
+                if (i-1 >= 0 && map[i-1][j] > 0) {
+                    map[i][j] += map[i-1][j]%1000000007;
                 }
-                if (j-1 < 0 || map[i][j-1] == -1) {
-                    left = 0;
-                } else {
-                    left = map[i][j-1];
-                }
-                if (map[i][j] != -1) {
-                    map[i][j] += (left + up)%1000000007;
-                }
+                if (j-1 >= 0 && map[i][j-1] > 0) {
+                   map[i][j] += map[i][j-1]%1000000007;
+                }                
             }
         }
         
