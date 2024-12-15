@@ -38,7 +38,7 @@ class Solution {
     
     public int[] solution(String[] genres, int[] plays) {
         List<Integer> answer = new ArrayList<>();
-        Map<String, Integer> totalPlays = new TreeMap<>(Collections.reverseOrder());
+        Map<String, Integer> totalPlays = new HashMap<>();
         Map<String, Set<PlayCount>> playCounts = new HashMap<>();
         
         for (int i = 0; i < genres.length; ++i) {
