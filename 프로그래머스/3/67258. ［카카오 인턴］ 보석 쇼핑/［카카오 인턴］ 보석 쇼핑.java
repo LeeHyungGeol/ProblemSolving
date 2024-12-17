@@ -2,28 +2,33 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] gems) {
-        int kind = new HashSet<>(Arrays.asList(gems)).size();
- 
         int[] answer = new int[2];
-        int length = Integer.MAX_VALUE, start = 0;
-               
-        Map<String, Integer> map = new HashMap<>();
+        int distance = Integer.MAX_VALUE, start = 0, end = 0;
+        int totalGemKind = new HashSet<>(Arrays.asList(gems)).size();
+        Map<String, Integer> gemCounter = new HashMap<>();
         
-        for (int end = 0; end < gems.length; end++) {
-            map.put(gems[end], map.getOrDefault(gems[end], 0) + 1);
- 
-            while (map.get(gems[start]) > 1) {
-                map.put(gems[start], map.get(gems[start]) - 1);
-                start++;
+        while (true) {
+            if (end == gems.length) {
+                break;
             }
- 
-            if (map.size() == kind && length > (end - start)) {
-                length = end - start;
-                answer[0] = start + 1;
-                answer[1] = end + 1;
+            
+            gemCounter.put(gems[end], gemCounter.getOrDefault(gems[end], 0) + 1);
+            
+            while(gemCounter.get(gems[start]) > 1) {
+                gemCounter.put(gems[start], gemCounter.get(gems[start]) - 1);
+                ++start;
             }
+            
+            if (gemCounter.size() == totalGemKind && end-start < distance) {
+                distance = end-start;
+                answer[0] = start+1;
+                answer[1] = end+1;
+            }
+            
+            ++end;
         }
- 
+        
+        
         return answer;
     }
 }
