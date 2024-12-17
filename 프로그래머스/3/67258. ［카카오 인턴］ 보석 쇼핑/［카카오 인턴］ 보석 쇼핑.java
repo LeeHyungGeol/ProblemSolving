@@ -8,24 +8,24 @@ class Solution {
         Map<String, Integer> gemCounter = new HashMap<>();
         
         while (true) {
-            if (end == gems.length) {
-                break;
-            }
-            
-            gemCounter.put(gems[end], gemCounter.getOrDefault(gems[end], 0) + 1);
-            
-            while(gemCounter.get(gems[start]) > 1) {
+            if (gemCounter.size() == totalGemKind) {
                 gemCounter.put(gems[start], gemCounter.get(gems[start]) - 1);
+                if (gemCounter.get(gems[start]) == 0) {
+                    gemCounter.remove(gems[start]);
+                }
                 ++start;
+            } else if (end == gems.length) {
+                break;
+            } else {
+                gemCounter.put(gems[end], gemCounter.getOrDefault(gems[end], 0) + 1);
+                ++end;
             }
             
             if (gemCounter.size() == totalGemKind && end-start < distance) {
                 distance = end-start;
                 answer[0] = start+1;
-                answer[1] = end+1;
+                answer[1] = end;                
             }
-            
-            ++end;
         }
         
         
