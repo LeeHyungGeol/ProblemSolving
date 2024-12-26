@@ -28,7 +28,7 @@ class Solution {
         if (seller.equals("-") || amount == 0) {
             return;
         }
-        results.put(seller, results.get(seller) + (int)Math.ceil((amount*9.0)/10.0));
-        dfs(tree.get(seller), amount - (int)Math.ceil((amount*9.0)/10.0), tree, results);
+        results.put(seller, results.get(seller) + (amount - (int)(amount * 0.1)));
+        dfs(tree.get(seller), (int)(amount*0.1), tree, results);
     }
 }
