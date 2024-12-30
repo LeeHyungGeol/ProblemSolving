@@ -1,10 +1,10 @@
 # [level 3] 등대 - 133500 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/133500#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/133500) 
 
 ### 성능 요약
 
-메모리: 110 MB, 시간: 86.86 ms
+메모리: 111 MB, 시간: 105.66 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 12월 30일 17:27:27
+2024년 12월 30일 17:37:43
 
 ### 문제 설명
 

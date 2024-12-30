@@ -5,6 +5,8 @@ class Solution {
     private static int Answer = 0;
     
     public int solution(int n, int[][] lighthouse) {
+        int[] visited = new int[n+1];
+        
         for (int i = 0; i <= n; ++i) {
             Graph.add(new ArrayList<>());
         }
@@ -16,31 +18,27 @@ class Solution {
             Graph.get(b).add(a);
         }
         
-        dfs(1, 0);
+        dfs(visited, 1);
+        
+        for (int i = 0; i < visited.length; ++i) {
+            if (visited[i] == 2) {
+                ++Answer;
+            }
+        }
         
         return Answer;
     }
     
-    private int dfs(int current, int previous) {
-        if (Graph.get(current).size() == 1 && Graph.get(current).get(0) == previous) {
-            return 1;
-        }
-        
-        int shouldLightOn = 0;
+    private void dfs(int[] visited, int current) {
+        visited[current] = 1;
         
         for (int next : Graph.get(current)) {
-            if (next == previous) {
-                continue;
+            if (visited[next] == 0) {
+                dfs(visited, next);
+                if (visited[next] == 1) {
+                    visited[current] = 2;
+                }
             }
-            shouldLightOn += dfs(next, current);
         }
-        
-        if (shouldLightOn == 0) {
-            return 1;
-        } else {
-            ++Answer;
-        }
-        
-        return 0;
     }
 }
