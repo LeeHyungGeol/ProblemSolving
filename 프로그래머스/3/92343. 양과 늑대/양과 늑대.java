@@ -28,27 +28,27 @@ class Solution {
         if (Visited[current][sheep][wolf]) {
             return;
         }
-        
-        int backupSheep = sheep, backupWolf = wolf, backupNode = Node[current];
-        
-        Visited[current][sheep][wolf] = true;
+       
         if (Node[current] == 0) {
             ++sheep;
         }
         else if (Node[current] == 1) {
             ++wolf;
         }
-        Node[current] = -1;
         
-        if (sheep > wolf) {
-            Answer = Math.max(Answer, sheep);
-            
-            for (int next : Graph.get(current)) {
-                dfs(next, sheep, wolf);
-            }
+        if (wolf >= sheep) {
+            return;
         }
         
-        Visited[current][backupSheep][backupWolf] = false;
-        Node[current] = backupNode;
+        Answer = Math.max(Answer, sheep);
+            
+        for (int next : Graph.get(current)) {
+            int backupNode = Node[current];
+            Node[current] = -1;
+            Visited[current][sheep][wolf] = true;
+            dfs(next, sheep, wolf);
+            Node[current] = backupNode;
+            Visited[current][sheep][wolf] = false;
+        }
     }
 }
