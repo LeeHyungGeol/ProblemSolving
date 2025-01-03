@@ -43,12 +43,12 @@ class Solution {
         Answer = Math.max(Answer, sheep);
             
         for (int next : Graph.get(current)) {
-            int backupNode = Node[current];
+            int backupSheep = sheep, backupWolf = wolf, backupNode = Node[current];
             Node[current] = -1;
             Visited[current][sheep][wolf] = true;
             dfs(next, sheep, wolf);
             Node[current] = backupNode;
-            Visited[current][sheep][wolf] = false;
+            Visited[current][backupSheep][backupWolf] = false;
         }
     }
 }
