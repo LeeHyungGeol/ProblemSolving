@@ -12,7 +12,7 @@ public class Main {
         int[][] arr = new int[n][n];
 
         if (n == 1) {
-            System.out.println(1);
+            System.out.println(2);
             return;
         }
 
