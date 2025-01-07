@@ -21,36 +21,16 @@ public class Main {
         }
 
         br.close(); 
-int count = 0;
-        for (int i = 0; i < arr.length; ++i) {
-            for (int j = 0; j < arr[i].length; ++j) {
-                if (arr[i][j]==1) {
-                    ++count;
-                }
-            }
-        }
 
         int answer = 0;
 
-        for (int k = 0; k <= 2*(n-1); ++k) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (k == 0) {
-                        if (inRange(i,j, arr.length) && arr[i][j] == 1) {
-                            if(m >= getMineCost(k)) {
-                                answer = Math.max(answer, 1);
-                            }
-                        }
-                        continue;
-                    }
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                for (int k = 0; k <= 2*(n-1); ++k) {
                     int goldCount = getGoldCount(arr,i,j,k);
                     int goldMoney = goldCount * m;
-                    int mineCost = getMineCost(k);
 
-                    if (mineCost > n*n) {
-                        mineCost = n*n;
-                    }
-                    if(goldMoney >= mineCost) {
+                    if(goldMoney >= getMineCost(k)) {
                         answer = Math.max(answer, goldCount);
                     }
                 }
@@ -63,24 +43,14 @@ int count = 0;
 
     private static int getGoldCount(int[][] arr, int x, int y, int k) {
         int goldCount = 0;
-        int blockCount = 0;
 
-        for (int limit = -k; limit <= k; ++limit) {
-            if (limit <= 0) {
-                for (int j = -(limit+k); j <= (limit+k); ++j) {
-                    if (inRange(x+limit, y+j, arr.length) && arr[x+limit][y+j] == 1) {
-                        ++goldCount;
-                    }
-                }
-            } else {
-                for (int j = (limit-k); j <= (limit-k); ++j) {
-                    if (inRange(x+limit, y+j, arr.length) && arr[x+limit][y+j] == 1) {
-                        ++goldCount;
-                    }
+        for (int i=0; i< arr.length; i++) {
+            for (int j=0; j< arr[i].length; j++) {
+                if (Math.abs(i-x) + Math.abs(j-y) <= k) { 
+                    goldCount += arr[i][j];
                 }
             }
         }
-
         return goldCount;
     }
 
