@@ -29,7 +29,7 @@ public class Main {
                 for (int j = 0; j < n; ++j) {
                     if (k == 0) {
                         if (inRange(i,j, arr.length) && arr[i][j] == 1) {
-                            if(m > getMineCost(k)) {
+                            if(m >= getMineCost(k)) {
                                 answer = Math.max(answer, 1);
                             }
                         }
