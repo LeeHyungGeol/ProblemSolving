@@ -50,7 +50,7 @@ int count = 0;
                     if (mineCost > n*n) {
                         mineCost = n*n;
                     }
-                    if(goldMoney >= getMineCost(k)) {
+                    if(goldMoney >= mineCost) {
                         answer = Math.max(answer, goldCount);
                     }
                 }
