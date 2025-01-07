@@ -21,6 +21,14 @@ public class Main {
         }
 
         br.close(); 
+int count = 0;
+        for (int i = 0; i < arr.length; ++i) {
+            for (int j = 0; j < arr[i].length; ++j) {
+                if (arr[i][j]==1) {
+                    ++count;
+                }
+            }
+        }
 
         int answer = 0;
 
@@ -37,8 +45,12 @@ public class Main {
                     }
                     int goldCount = getGoldCount(arr,i,j,k);
                     int goldMoney = goldCount * m;
+                    int mineCost = getMineCost(k);
 
-                    if(goldMoney > getMineCost(k)) {
+                    if (mineCost > n*n) {
+                        mineCost = n*n;
+                    }
+                    if(goldMoney >= getMineCost(k)) {
                         answer = Math.max(answer, goldCount);
                     }
                 }
