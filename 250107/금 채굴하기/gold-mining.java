@@ -24,7 +24,7 @@ public class Main {
 
         int answer = 0;
 
-        for (int k = 0; k < (n+1)/2; ++k) {
+        for (int k = 0; k <= 2*(n-1); ++k) {
             for (int i = 0; i < n; ++i) {
                 for (int j = 0; j < n; ++j) {
                     if (k == 0) {
