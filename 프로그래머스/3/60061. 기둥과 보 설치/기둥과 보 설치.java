@@ -21,11 +21,7 @@ class Solution {
                 if (b == 1 && canExistColumn(x,y)) {
                     Columns[x][y] = 1;
                 } else {
-                    
                     Columns[x][y] = 0;
-                    if (x == 2 && y == 0) {
-                        System.out.println(canDestroy(x,y));
-                    }
                     if (canDestroy(x,y) == false) {
                         Columns[x][y] = 1;
                     }
