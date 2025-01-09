@@ -45,7 +45,8 @@ public class Main {
                 for (int i2 = i; i2 < N; ++i2) {
                     for (int j2 = j; j2 < M; ++j2) {
                         if (isNotOverlapped(x,y,x2,y2, i,j,i2,j2)) {
-                            result = Math.max(result, sumOfrectangle1+getSum(arr, i,j,i2,j2));
+                            int sumOfrectangle2 = getSum(arr, i,j,i2,j2);
+                            result = Math.max(result, sumOfrectangle1+sumOfrectangle2);
                         }
                     }
                 }
