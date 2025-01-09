@@ -22,6 +22,7 @@ public class Main {
         N = n;
         M = m;
         int answer = 0;
+        boolean flag = false;
 
         for (int x = 0; x < n; ++x) {
             for (int y = 0; y < m; ++y) {
@@ -29,13 +30,18 @@ public class Main {
                     for (int y2 = y; y2 < m; ++y2) {
                         if (isAllPlus(arr, x,y,x2,y2)) {
                             answer = Math.max(answer, getArea(x,y,x2,y2));
+                            flag = true;
                         }
                     }
                 }
             }
         }   
 
-        System.out.println(answer);
+        if (flag) {
+            System.out.println(answer);
+        } else {
+            System.out.println(-1);
+        }
         return;
     }
 
