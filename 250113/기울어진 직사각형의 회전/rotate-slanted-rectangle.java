@@ -39,6 +39,8 @@ public class Main {
         int r = query[0]-1;
         int c = query[1]-1;
         int[] length = new int[4];
+        int[] dx;
+        int[] dy;
         boolean isClockwise = query[6] == 1;
 
         if (isClockwise) {
@@ -46,21 +48,21 @@ public class Main {
             length[1] = query[4];
             length[2] = query[3];
             length[3] = query[2];
-            rotateClockwise(arr, r,c,length);
+            dx = new int[]{-1,-1,1,1};
+            dy = new int[]{-1,1,1,-1};
 
         } else {
             length[0] = query[2];
             length[1] = query[3];
             length[2] = query[4];
             length[3] = query[5];
-            rotateCounterClockwise(arr, r,c,length);
+            dx = new int[]{-1,-1,1,1};
+            dy = new int[]{1,-1,-1,1};
         }
+        rotate(arr, r,c,dx,dy,length);
     }
 
-    private static void rotateClockwise(int[][] arr, int x, int y, int[] length) {
-        int[] dx = {-1,-1,1,1};
-        int[] dy = {-1,1,1,-1};
-
+    private static void rotate(int[][] arr, int x, int y, int[] dx, int[] dy, int[] length) {
         int temp = arr[x][y];
 
         for (int direction = 0; direction < 4; ++direction) {
@@ -71,28 +73,6 @@ public class Main {
                 int swapTemp = arr[nx][ny];
                 arr[nx][ny] = temp;
                 temp = swapTemp;
-
-                x = nx;
-                y = ny;
-            }
-        }
-    }
-
-    private static void rotateCounterClockwise(int[][] arr, int x, int y, int[] length) {
-        int[] dx = {-1,-1,1,1};
-        int[] dy = {1,-1,-1,1};
-
-        int temp = arr[x][y];
-
-        for (int direction = 0; direction < 4; ++direction) {
-            for (int step = 0; step < length[direction]; ++step) {
-                int nx = x + dx[direction];
-                int ny = y + dy[direction];
-
-                int swapTemp = arr[nx][ny];
-                arr[nx][ny] = temp;
-                temp = swapTemp;
-
 
                 x = nx;
                 y = ny;
