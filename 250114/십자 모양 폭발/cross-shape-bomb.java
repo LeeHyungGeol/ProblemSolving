@@ -38,15 +38,24 @@ public class Main {
     private static void bomb(int[][] arr, int x, int y) {
         int length = arr[x][y]-1;
 
-        for (int i = x-length; i <= x+length; ++i) {
-            if (isInRange(i,y)) {
-                arr[i][y] = 0;
-            }
-        }
+        // for (int i = x-length; i <= x+length; ++i) {
+        //     if (isInRange(i,y)) {
+        //         arr[i][y] = 0;
+        //     }
+        // }
 
-        for (int j = y-length; j <= y+length; ++j) {
-            if (isInRange(x,j)) {
-                arr[x][j] = 0;
+        // for (int j = y-length; j <= y+length; ++j) {
+        //     if (isInRange(x,j)) {
+        //         arr[x][j] = 0;
+        //     }
+        // }
+
+        int bombRange = arr[x][y];
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                if (isInBombRange(x,y,i,j, bombRange)) {
+                    arr[i][j] = BLANK;
+                }
             }
         }
 
@@ -68,6 +77,10 @@ public class Main {
         for (int i = N-1; i >= 0; --i) {
             arr[i][y] = tempArr[i];
         }
+    }
+
+    private static boolean isInBombRange(int centerX, int centerY, int x, int y, int bombRange) {
+        return (centerX == x || centerY == y) && (Math.abs(x-centerX) + Math.abs(y-centerY) < bombRange); 
     }
 
     private static boolean isInRange(int x, int y) {
