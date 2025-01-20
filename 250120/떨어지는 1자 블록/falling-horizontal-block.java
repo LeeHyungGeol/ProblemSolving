@@ -34,6 +34,10 @@ public class Main {
 				int nx = p.x + 1;
 				int ny = p.y;
 
+				if (!isInRange(nx, ny)) {
+					isReached = true;
+					break;
+				}
 				if (isInRange(nx, ny) && arr[nx][ny] == 1) {
 					isReached = true;
 					break;
