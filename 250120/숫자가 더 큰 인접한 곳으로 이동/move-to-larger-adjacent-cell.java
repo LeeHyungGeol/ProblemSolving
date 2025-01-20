@@ -2,8 +2,8 @@ import java.util.*;
 
 public class Main {
 	private static int N = 0;
-	private static int[] DX = {0,0,1,-1};
-	private static int[] DY = {1,-1,0,0};
+	private static int[] DX = {-1,1,0,0};
+	private static int[] DY = {0,0,-1,1};
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -23,34 +23,34 @@ public class Main {
 		sc.close();
 
 		N = n;
-
-		Queue<Point> pq = new PriorityQueue<>((o1, o2) -> o2.direction - o1.direction);
-		pq.add(new Point(r,c, -1, arr[r][c]));
-
+		int x = r;
+		int y = c;
+		List<Integer> answer = new ArrayList<>();
+		answer.add(arr[x][y]);
 
 		while(true) {
-			boolean isBiggerThan = false;
-			Point maxPoint = pq.poll();
-			pq.clear();
-
-			System.out.print(maxPoint.num + " ");
-
-			int x = maxPoint.x;
-			int y = maxPoint.y;
+			boolean greaterNumberExist = false;
 
 			for (int d = 0; d < 4; ++d) {
 				int nx = x + DX[d];
 				int ny = y + DY[d];
 
-				if (isInRange(nx, ny) && arr[nx][ny] > maxPoint.num) {
-					pq.add(new Point(nx, ny, d, arr[nx][ny]));
-					isBiggerThan = true;
+				if (isInRange(nx, ny) && arr[nx][ny] > arr[x][y]) {
+					answer.add(arr[nx][ny]);
+					x = nx;
+					y = ny;
+					greaterNumberExist = true;
+					break;
 				}
 			}
 
-			if (!isBiggerThan) {
+			if (!greaterNumberExist) {
 				break;
 			}
+		}
+
+		for (int num : answer) {
+			System.out.print(num + " ");
 		}
 	}
 
