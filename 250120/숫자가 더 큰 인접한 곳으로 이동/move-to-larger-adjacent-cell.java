@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Main {
 	private static int N = 0;
-	private static int[] DX = {0,0,-1,1};
+	private static int[] DX = {0,0,1,-1};
 	private static int[] DY = {1,-1,0,0};
 
 	public static void main(String[] args) {
