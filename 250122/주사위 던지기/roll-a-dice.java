@@ -2,6 +2,7 @@ import java.util.*;
 
 public class Main {
     private static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
+    public static final int ASCII_NUM = 128;
 
     private static int N = 0;
     private static int[] Dice = {1,2,3};
@@ -24,12 +25,17 @@ public class Main {
         N = n;
 
         int[][] arr = new int[N][N];
-        int d = -1;
+        // int d = -1;
+        int[] dirMapper = new int[ASCII_NUM];
+        dirMapper['L'] = 0;
+        dirMapper['R'] = 1;
+        dirMapper['U'] = 2;
+        dirMapper['D'] = 3;
 
         arr[r][c] = getBottomNumberOfDice(Dice);
 
         for (String direction : directions) {
-            d = getDirection(direction);
+            int d = dirMapper[direction.charAt(0)];
             int nx = r + DX[d];
             int ny = c + DY[d];
 
@@ -52,17 +58,17 @@ public class Main {
         System.out.println(answer);
     }
 
-    private static int getDirection(String direction) {
-        int d = direction.charAt(0);
-        if (d == 'L') {
-            return LEFT;
-        } else if (d == 'R') {
-            return RIGHT;
-        } else if (d == 'U') {
-            return UP;
-        }
-        return DOWN;
-    }
+    // private static int getDirection(String direction) {
+    //     int d = direction.charAt(0);
+    //     if (d == 'L') {
+    //         return LEFT;
+    //     } else if (d == 'R') {
+    //         return RIGHT;
+    //     } else if (d == 'U') {
+    //         return UP;
+    //     }
+    //     return DOWN;
+    // }
 
     private static int getBottomNumberOfDice(int[] dice) {
         return 7-dice[0];
