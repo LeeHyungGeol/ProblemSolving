@@ -2,14 +2,12 @@ import java.util.*;
 
 public class Main {
     private static final int ASCII = 128;
-    private static final int UP = 0, DOWN = 1, RIGHT = 2, LEFT = 3;
+    private static final int UP = 0, DOWN = 1, RIGHT = 2, LEFT = 3, SNAKE = 1, APPLE = 2;
 
     private static int[] DirMapper;
     private static int[] DX = {-1,1,0,0};
     private static int[] DY = {0,0,1,-1};
     private static int N = 0, M = 0, K = 0;
-
-    private static Point Head = new Point(0,0);
 
     public static void main(String[] args) {
        Scanner sc = new Scanner(System.in);
@@ -42,55 +40,68 @@ public class Main {
         DirMapper['L'] = 3;
 
         for (Point apple : apples) {
-            arr[apple.x][apple.y] = 1;
+            arr[apple.x][apple.y] = APPLE;
         }
 
         int answer = 0;
-        List<Point> bodies = new ArrayList<>();
+        Deque<Point> bodies = new ArrayDeque<>();
+
+        arr[0][0] = SNAKE;
+        bodies.addFirst(new Point(0,0));
 
         for (String[] move : moves) {
             int d = DirMapper[move[0].charAt(0)];
             int p = Integer.parseInt(move[1]);
 
-            int nx = 0, ny = 0;
             boolean isEndOfGame = false;
 
             for (int step = 0; step < p; ++step) {
-                Point headMove = new Point(Head.x + DX[d], Head.y + DY[d]);
-
-                // System.out.println("x: "+ headMove.x+", y: "+headMove.y);
-
-                // for (Point point : bodies) {
-                //     System.out.println("bodyX: "+ point.x+", bodyY: "+point.y);
-                // }
+                int nx = bodies.peekFirst().x + DX[d];
+                int ny = bodies.peekFirst().y + DY[d];
+                
+                // System.out.println("x: "+ nx+", y: "+ny);
 
                 ++answer;
 
-                if (!isInRange(headMove.x, headMove.y) || bodies.contains(headMove)) {
-                    isEndOfGame = true;
+                if (isInRange(nx, ny)) {
+                    if (isApple(arr, nx, ny)) {
+                        bodies.addFirst(new Point(nx, ny));
+                        arr[nx][ny] = SNAKE;
+                        continue;
+                    } 
+                    if (isBlank(arr, nx, ny) || bodies.peekLast().equals(new Point(nx, ny))) {
+                        Point removedBody = bodies.pollLast();
+                        arr[removedBody.x][removedBody.y] = 0;
+                        bodies.addFirst(new Point(nx, ny));
+                        arr[nx][ny] = SNAKE;
+                        continue;
+                    }
+                } 
+                
+                isEndOfGame = true;
+                
+                if (isEndOfGame) {
                     break;
                 }
-
-                if (arr[headMove.x][headMove.y] == 1) {
-                    bodies.add(0, new Point(Head.x, Head.y));
-                    Head.x = headMove.x;
-                    Head.y = headMove.y;
-                    arr[headMove.x][headMove.y] = 0;
-                    continue;
-                }
-
-                bodies.add(0, new Point(Head.x, Head.y));
-                bodies.remove(bodies.size()-1);
-                Head.x = headMove.x;
-                Head.y = headMove.y;
+                // for (Point point : bodies) {
+                //     System.out.println("bodyX: "+ point.x+", bodyY: "+point.y);
+                // }
             }
-
-            if (isEndOfGame) {
+             if (isEndOfGame) {
                 break;
             }
+           
         }
 
         System.out.println(answer);
+    }
+
+    private static boolean isApple(int[][] arr, int x, int y) {
+        return arr[x][y] == APPLE;
+    }
+
+    private static boolean isBlank(int[][] arr, int x, int y) {
+        return arr[x][y] == 0;
     }
 
     private static boolean isInRange(int x, int y) {
