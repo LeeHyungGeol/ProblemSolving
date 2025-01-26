@@ -20,33 +20,32 @@ public class Main {
             }
         }
 
-        Queue<Integer> pq = new PriorityQueue<>((a,b) -> b-a);
-
+        int answer = -1;
         int d = DOWN;
         int x = -1;
         for (int col = 0; col < N; ++col) {
-            pq.add(simulate(arr, x, col, d));
+            answer = Math.max(answer, simulate(arr, x, col, d));
         }
 
         d = RIGHT;
         int y = -1;
         for (int row = 0; row < N; ++row) {
-            pq.add(simulate(arr, row, y, d));
+            answer = Math.max(answer, simulate(arr, row, y, d));
         }
 
         d = UP;
         x = N;
         for (int col = 0; col < N; ++col) {
-            pq.add(simulate(arr, x, col, d));
+            answer = Math.max(answer, simulate(arr, x, col, d));
         }
 
         d = LEFT;
         y = N;
         for (int row = 0; row < N; ++row) {
-            pq.add(simulate(arr, row, y, d));
+            answer = Math.max(answer, simulate(arr, row, y, d));
         }
 
-        System.out.println(pq.peek());
+        System.out.println(answer);
     }
 
     private static int simulate(int[][] arr, int x, int y, int d) {
