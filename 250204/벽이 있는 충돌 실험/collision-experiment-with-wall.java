@@ -38,7 +38,7 @@ public class Main {
                 Points.add(new Point(x,y,DirMapper[dir.charAt(0)]));
             }
 
-            for (int count = 1; count <= N*N; ++count) {
+            for (int count = 1; count <= 2*N; ++count) {
                 moveAll();
             }
 
