@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
     private static final int U = 0, D = 1, L = 2, R = 3, ASCII = 128;
@@ -11,11 +12,11 @@ public class Main {
     private static int T = 0, N = 0, M = 0;
 
     private static List<Point> Points;
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
-        T = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        T = Integer.parseInt(br.readLine());
 
         DirMapper['U'] = 0;
         DirMapper['D'] = 1;
@@ -23,17 +24,19 @@ public class Main {
         DirMapper['R'] = 3;
 
         while (T-- > 0) {
-            N = sc.nextInt();
-            M = sc.nextInt();
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
             
             Arr = new int[N][N];
             NewArr = new int[N][N];
             Points = new ArrayList<>(); 
 
             for (int i = 0; i < M; ++i) {
-                int x = sc.nextInt()-1;
-                int y = sc.nextInt()-1;
-                String dir = sc.next();
+                st = new StringTokenizer(br.readLine());
+				int x = Integer.parseInt(st.nextToken())-1;
+				int y = Integer.parseInt(st.nextToken())-1;
+				String dir = st.nextToken();
 
                 Points.add(new Point(x,y,DirMapper[dir.charAt(0)]));
             }
