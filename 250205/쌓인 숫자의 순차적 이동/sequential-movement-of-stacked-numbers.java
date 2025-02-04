@@ -40,9 +40,8 @@ public class Main {
                 if (Arr[i][j].isEmpty()) {
                     System.out.print("None");
                 } else {
-                    Iterator<Integer> it = Arr[i][j].descendingIterator();
-                    while(it.hasNext()){
-                        System.out.print(it.next() + " ");
+                    for (int v : Arr[i][j]) {
+                        System.out.print(v + " ");
                     }
                 }
                 System.out.println();
@@ -96,14 +95,14 @@ public class Main {
     private static void move(int value, Point curPoint, Point nextPoint) {
         boolean isToMove = false;
 
-        Iterator<Integer> it = Arr[curPoint.x][curPoint.y].iterator();
+        Iterator<Integer> it = Arr[curPoint.x][curPoint.y].descendingIterator();
 		while(it.hasNext()){
 			int k = it.next();
 			if (value == k) {
                 isToMove = true;
             }
 			if(isToMove){
-				Arr[nextPoint.x][nextPoint.y].offerLast(k);
+				Arr[nextPoint.x][nextPoint.y].offerFirst(k);
 				it.remove();
 			}
 		}
