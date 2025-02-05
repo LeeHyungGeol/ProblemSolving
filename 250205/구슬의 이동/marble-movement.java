@@ -33,6 +33,7 @@ public class Main {
             int direction = DirMapper[scanner.next().charAt(0)]; 
             int speed = scanner.nextInt();      
             Marbles.add(new Marble(x,y, direction, speed, i+1));
+            Arr[x][y]++;
         }
 
         while(T-- > 0) {
@@ -137,12 +138,6 @@ public class Main {
 
         @Override
         public int compareTo(Marble other) {
-            if (this.x != other.x) {
-                return this.x - other.x;
-            }
-            if (this.y != other.y) {
-                return this.y - other.y;
-            }
             if (this.speed != other.speed) {
                 return other.speed - this.speed;
             }
