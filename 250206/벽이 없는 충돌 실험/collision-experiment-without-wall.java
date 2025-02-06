@@ -1,144 +1,134 @@
-import java.io.*;
 import java.util.*;
-
 public class Main {
+    static final int U = 0, D = 1, L = 2, R = 3, ASCII = 128, SIZE = 4000, OFFSET = 2000;
+    static final Marble IllegalPoint = new Marble(-1,-1,-1,-1,-1);
+    
+    static int T = 0, N = 0, LastCollisionTime = 0, CurTime = 0;
+    static int[] DirMapper = new int[ASCII];
+    static int[] DX = {-1,1,0,0};
+    static int[] DY = {0,0,-1,1};
+    static ArrayList<Marble>[][] Arr;
 
-    static int T;
-    static int N;
-    static int[] mapper = new int['Z' + 1];
-    static double[] dx = {-0.5, 0.0, 0.0, 0.5};
-    static double[] dy = {0.0, -0.5, 0.5, 0.0};
-    static List<Gem> gems;
-    static int time;
-    static int lastCrashTime;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-    private static void initMapper() {
-        mapper['L'] = 0;
-        mapper['D'] = 1;
-        mapper['U'] = 2;
-        mapper['R'] = 3;
-    }
+        T = scanner.nextInt();
+        DirMapper['U'] = 0;
+        DirMapper['D'] = 1;
+        DirMapper['L'] = 2;
+        DirMapper['R'] = 3;
 
-    static class Coordinate {
-        double x;
-        double y;
+        while(T-- > 0) {
+            N = scanner.nextInt();
 
-        public Coordinate(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
+            Arr = new ArrayList[SIZE][SIZE];
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Coordinate that = (Coordinate) o;
-
-            if (Double.compare(that.x, x) != 0) return false;
-            return Double.compare(that.y, y) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            long temp;
-            temp = Double.doubleToLongBits(x);
-            result = (int) (temp ^ (temp >>> 32));
-            temp = Double.doubleToLongBits(y);
-            result = 31 * result + (int) (temp ^ (temp >>> 32));
-            return result;
-        }
-    }
-
-    static class Gem {
-        double x;
-        double y;
-        int number;
-        int direction;
-        int weight;
-
-        Gem(double x, double y, int number, int direction, int weight) {
-            this.x = x;
-            this.y = y;
-            this.number = number;
-            this.direction = direction;
-            this.weight = weight;
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st;
-
-        T = Integer.parseInt(br.readLine());
-
-        for (int tc = 0; tc < T; tc++) {
-            N = Integer.parseInt(br.readLine());
-            gems = new ArrayList<>();
-            lastCrashTime = -1;
-            initMapper();
-
-            for (int num = 1; num <= N; num++) {
-                st = new StringTokenizer(br.readLine(), " ");
-
-                double x = Double.parseDouble(st.nextToken());
-                double y = Double.parseDouble(st.nextToken());
-                int w = Integer.parseInt(st.nextToken());
-                int d = mapper[st.nextToken().charAt(0)];
-
-                gems.add(new Gem(x, y, num, d, w));
+            for (int i = 0; i < SIZE; ++i) {
+                for (int j = 0; j < SIZE; ++j) {
+                    Arr[i][j] = new ArrayList<>();
+                }
             }
 
-            time = 0;
-            while (time++ < 4000) {
+            for (int i = 0; i < N; i++) {
+                int x = scanner.nextInt();
+                int y = scanner.nextInt();
+                int w = scanner.nextInt();
+                int dir = DirMapper[scanner.next().charAt(0)];
+                int nx = (x*2) + OFFSET;
+                int ny = (y*2) + OFFSET;
+
+                Arr[nx][ny].add(new Marble(nx,ny,dir,w,i+1));
+            }
+
+            LastCollisionTime = -1;
+            for (int t = 1; t <= SIZE; ++t) {
+                CurTime = t;
                 simulate();
             }
-            sb.append(lastCrashTime).append("\n");
-        }
 
-        bw.write(sb.toString());
-        bw.close();
-        br.close();
+            System.out.println(LastCollisionTime);
+        }
     }
 
     private static void simulate() {
-        Map<Coordinate, List<Gem>> map = new HashMap<>();
-        for (Gem gem : gems) {
-            gem.x = gem.x + dx[gem.direction];
-            gem.y = gem.y + dy[gem.direction];
+        moveAll();
+        removeDuplicatedMarbles();
+    }
 
-            Coordinate coordinate = new Coordinate(gem.x, gem.y);
-            if (map.containsKey(coordinate)) {
-                map.get(coordinate).add(gem);
-            } else {
-                List<Gem> list = new ArrayList<>();
-                list.add(gem);
-                map.put(coordinate, list);
-            }
-        }
+    private static void moveAll() {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                if (Arr[i][j].isEmpty()) continue;
+                Iterator<Marble> it = Arr[i][j].iterator();
 
-        for (Map.Entry<Coordinate, List<Gem>> entry : map.entrySet()) {
-            if (entry.getValue().size() > 1) {
-                lastCrashTime = time;
-                PriorityQueue<Gem> pq = new PriorityQueue<>((o1, o2) -> {
-                    if (o1.weight == o2.weight) {
-                        return Integer.compare(o2.number, o1.number);
+                while (it.hasNext()) {
+                    Marble m = it.next();
+                    m.move();
+                    if (m != IllegalPoint) {
+                        Arr[m.x][m.y].add(m);
                     }
-                    return Integer.compare(o2.weight, o1.weight);
-                });
-
-                for (Gem gem : entry.getValue()) {
-                    pq.offer(gem);
-                }
-                pq.poll();
-                while (!pq.isEmpty()) {
-                    gems.remove(pq.poll());
+                    it.remove();
                 }
             }
         }
+    }
 
+    private static void removeDuplicatedMarbles() {
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                if (Arr[i][j].size() >= 2) {
+                    LastCollisionTime = CurTime;
+                    removeMarble(i, j);
+                }
+            } 
+        }
+    }
+
+    private static void removeMarble(int x, int y) {
+        Collections.sort(Arr[x][y]);
+        Arr[x][y].remove(Arr[x][y].size()-1);   
+    }
+
+    static class Marble implements Comparable<Marble>{
+        int x, y, dir, w, number;
+
+        public Marble(int x, int y, int dir, int w, int number) {
+            this.x = x;
+            this.y = y;
+            this.dir = dir;
+            this.w = w;
+            this.number = number;
+        }
+
+        public Marble move() {
+            int nx = this.x + DX[this.dir];
+            int ny = this.y + DY[this.dir];
+
+            if (!isInRange(nx, ny)) {
+                return IllegalPoint;
+            }
+
+            this.x = nx;
+            this.y = ny;
+
+            return this;
+        }
+
+        private boolean isInRange(int x, int y) {
+            return 0 <= x && x < SIZE && 0 <= y && y < SIZE;
+        }
+
+        private void changePosition(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public int compareTo(Marble other) {
+            if (this.number != other.number) {
+                return other.number - this.number;
+            }
+            return other.w - this.w;
+        }
     }
 }
