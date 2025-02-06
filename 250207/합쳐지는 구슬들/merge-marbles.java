@@ -81,6 +81,7 @@ public class Main {
 
         Marbles.add(new Marble(MaxNumMarble.x, MaxNumMarble.y, MaxNumMarble.dir, weightSum, MaxNumMarble.num));
         MaxMarbleWeight = Math.max(MaxMarbleWeight, weightSum);
+        Arr[x][y] = 1;
     }
 
     static class Marble {
