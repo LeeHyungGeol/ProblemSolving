@@ -1,33 +1,38 @@
 import java.util.*;
 public class Main {
-    static final int U = 0, D = 1, L = 2, R = 3, ASCII = 128, SIZE = 4000, OFFSET = 2000;
+    static final int U = 0, D = 1, L = 2, R = 3, ASCII = 128, SIZE = 4000, OFFSET = 2000, NONE = -1;
     static final Marble IllegalPoint = new Marble(-1,-1,-1,-1,-1);
     
     static int T = 0, N = 0, LastCollisionTime = 0, CurTime = 0;
     static int[] DirMapper = new int[ASCII];
-    static int[] DX = {-1,1,0,0};
-    static int[] DY = {0,0,-1,1};
-    static ArrayList<Marble>[][] Arr;
+    static int[] DX = {0, 1, -1, 0};
+    static int[] DY = {1, 0, 0, -1};
+    static int[][] Arr;
+    static ArrayList<Marble> Marbles;
+    static ArrayList<Marble> TempMarbles;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         T = scanner.nextInt();
         DirMapper['U'] = 0;
-        DirMapper['D'] = 1;
+        DirMapper['R'] = 1;
         DirMapper['L'] = 2;
-        DirMapper['R'] = 3;
+        DirMapper['D'] = 3;
+
+        Arr = new int[SIZE+1][SIZE+1];
+
+        for (int i = 0; i <= SIZE; ++i) {
+            for (int j = 0; j <= SIZE; ++j) {
+                Arr[i][j] = NONE;
+            }
+        }
 
         while(T-- > 0) {
             N = scanner.nextInt();
 
-            Arr = new ArrayList[SIZE][SIZE];
-
-            for (int i = 0; i < SIZE; ++i) {
-                for (int j = 0; j < SIZE; ++j) {
-                    Arr[i][j] = new ArrayList<>();
-                }
-            }
+            Marbles = new ArrayList<>();
+            TempMarbles = new ArrayList<>();
 
             for (int i = 0; i < N; i++) {
                 int x = scanner.nextInt();
@@ -37,12 +42,11 @@ public class Main {
                 int nx = (x*2) + OFFSET;
                 int ny = (y*2) + OFFSET;
 
-                Arr[nx][ny].add(new Marble(nx,ny,dir,w,i+1));
+                Marbles.add(new Marble(nx,ny,dir,w,i+1));
             }
 
             LastCollisionTime = -1;
-            for (int t = 1; t <= SIZE; ++t) {
-                CurTime = t;
+            for (CurTime = 1; CurTime <= SIZE; ++CurTime) {
                 simulate();
             }
 
@@ -52,41 +56,56 @@ public class Main {
 
     private static void simulate() {
         moveAll();
-        removeDuplicatedMarbles();
     }
 
     private static void moveAll() {
-        for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
-                if (Arr[i][j].isEmpty()) continue;
-                Iterator<Marble> it = Arr[i][j].iterator();
-
-                while (it.hasNext()) {
-                    Marble m = it.next();
-                    m.move();
-                    if (m != IllegalPoint) {
-                        Arr[m.x][m.y].add(m);
-                    }
-                    it.remove();
-                }
-            }
+        for (int i = 0; i < Marbles.size(); ++i) {
+            Marble next = Marbles.get(i).move();
+            removeDuplicatedMarblesIfExist(next);
         }
+
+        Marbles = (ArrayList<Marble>) TempMarbles.clone();
+
+        initForSimulate();
     }
 
-    private static void removeDuplicatedMarbles() {
-        for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
-                if (Arr[i][j].size() >= 2) {
-                    LastCollisionTime = CurTime;
-                    removeMarble(i, j);
-                }
-            } 
+    private static void removeDuplicatedMarblesIfExist(Marble m) {
+        if (isOutOfRange(m.x, m.y)) {
+            return;
         }
+        int index = getMarbleIndex(m);
+
+        if (index == NONE) {
+            TempMarbles.add(m);
+            Arr[m.x][m.y] = TempMarbles.size() - 1;
+        } else {
+            Marble survivedMarble = collision(m, TempMarbles.get(index));
+            TempMarbles.set(index, survivedMarble);
+            LastCollisionTime = CurTime;
+        }
+        
     }
 
-    private static void removeMarble(int x, int y) {
-        Collections.sort(Arr[x][y]);
-        Arr[x][y].remove(Arr[x][y].size()-1);   
+    private static Marble collision(Marble m1, Marble m2) {
+        if (m1.compareTo(m2) < 0) {
+            return m1;
+        }
+        return m2;
+    }
+
+    private static int getMarbleIndex(Marble m) {
+        return Arr[m.x][m.y];
+    }
+
+    private static void initForSimulate() {
+        for (Marble m : TempMarbles) {
+            Arr[m.x][m.y] = NONE;
+        }
+        TempMarbles = new ArrayList<>();
+    }
+
+    private static boolean isOutOfRange(int x, int y) {
+        return x < 0 || x > SIZE || y < 0 || y > SIZE;
     }
 
     static class Marble implements Comparable<Marble>{
@@ -104,18 +123,7 @@ public class Main {
             int nx = this.x + DX[this.dir];
             int ny = this.y + DY[this.dir];
 
-            if (!isInRange(nx, ny)) {
-                return IllegalPoint;
-            }
-
-            this.x = nx;
-            this.y = ny;
-
-            return this;
-        }
-
-        private boolean isInRange(int x, int y) {
-            return 0 <= x && x < SIZE && 0 <= y && y < SIZE;
+            return new Marble(nx, ny, this.dir, this.w, this.number);
         }
 
         private void changePosition(int x, int y) {
@@ -125,7 +133,7 @@ public class Main {
 
         @Override
         public int compareTo(Marble other) {
-            if (this.number != other.number) {
+            if (this.w == other.w) {
                 return other.number - this.number;
             }
             return other.w - this.w;
