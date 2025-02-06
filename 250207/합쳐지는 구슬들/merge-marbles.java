@@ -33,6 +33,7 @@ public class Main {
             int w = scanner.nextInt();    
             Marbles.add(new Marble(x,y, DirMapper[dir], w, i+1));
             Arr[x][y]++;
+            MaxMarbleWeight = Math.max(MaxMarbleWeight, w);
         }
 
         while(T-- > 0) {
