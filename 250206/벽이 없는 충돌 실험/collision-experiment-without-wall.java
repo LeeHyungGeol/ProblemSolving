@@ -61,7 +61,9 @@ public class Main {
     private static void moveAll() {
         for (int i = 0; i < Marbles.size(); ++i) {
             Marble next = Marbles.get(i).move();
-            removeDuplicatedMarblesIfExist(next);
+            if (next != IllegalPoint) {
+                removeDuplicatedMarblesIfExist(next);
+            }
         }
 
         Marbles = (ArrayList<Marble>) TempMarbles.clone();
@@ -70,9 +72,6 @@ public class Main {
     }
 
     private static void removeDuplicatedMarblesIfExist(Marble m) {
-        if (isOutOfRange(m.x, m.y)) {
-            return;
-        }
         int index = getMarbleIndex(m);
 
         if (index == NONE) {
@@ -83,7 +82,6 @@ public class Main {
             TempMarbles.set(index, survivedMarble);
             LastCollisionTime = CurTime;
         }
-        
     }
 
     private static Marble collision(Marble m1, Marble m2) {
@@ -104,10 +102,6 @@ public class Main {
         TempMarbles = new ArrayList<>();
     }
 
-    private static boolean isOutOfRange(int x, int y) {
-        return x < 0 || x > SIZE || y < 0 || y > SIZE;
-    }
-
     static class Marble implements Comparable<Marble>{
         int x, y, dir, w, number;
 
@@ -123,13 +117,20 @@ public class Main {
             int nx = this.x + DX[this.dir];
             int ny = this.y + DY[this.dir];
 
-            return new Marble(nx, ny, this.dir, this.w, this.number);
+            if (!isInRange(nx, ny)) {
+                return IllegalPoint;
+            }
+
+            this.x = nx;
+            this.y = ny;
+
+            return this;
         }
 
-        private void changePosition(int x, int y) {
-            this.x = x;
-            this.y = y;
+        private boolean isInRange(int x, int y) {
+            return 0 <= x && x <= SIZE && 0 <= y && y <= SIZE;
         }
+
 
         @Override
         public int compareTo(Marble other) {
