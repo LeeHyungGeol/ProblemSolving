@@ -47,9 +47,9 @@ public class Main {
         }
 
         Point thief1 = new Point(selected[0]/N, selected[0]%N);
-        int maxTheif1YSize = thief1.y + M;
+        int maxTheif1YSize = thief1.y + M-1;
         Point thief2 = new Point(selected[1]/N, selected[1]%N);
-        int maxTheif2YSize = thief2.y + M;
+        int maxTheif2YSize = thief2.y + M-1;
 
         if (!isInRange(thief1.x, maxTheif1YSize)) {
             return false;
@@ -80,20 +80,13 @@ public class Main {
 
     private static void countMaxWeight(int[] selected) {
         Point thief1 = new Point(selected[0]/N, selected[0]%N);
-        int maxTheif1YSize = thief1.y + M;
         Point thief2 = new Point(selected[1]/N, selected[1]%N);
-        int maxTheif2YSize = thief2.y + M;
 
         int[] selectWeight1 = new int[M];
         selectWeight1(thief1, selectWeight1, 0);
 
         int[] selectWeight2 = new int[M];
         selectWeight2(thief2, selectWeight2, 0);
-
-        //  if (selected[0] == 24 && selected[1] == 21) {
-        //     System.out.println("x: "+thief1.x + ", y:" + thief1.y + ", x2:"+ thief2.x+", y2: "+thief2.y);
-        //     System.out.println(MaxWeight1 + " " + MaxWeight2);
-        // }
 
         Answer = Math.max(Answer, MaxWeight1+MaxWeight2);
 
