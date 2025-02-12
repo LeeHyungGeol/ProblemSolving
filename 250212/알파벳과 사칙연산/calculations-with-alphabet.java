@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Main {
-    static int Answer = 0;
+    static int Answer = Integer.MIN_VALUE;
     static char[] Arr;
     static int[] Nums;
 
