@@ -37,7 +37,7 @@ public class Main {
             return true;
         }
 
-        for (int i = 0; i < N; i += 3) {
+        for (int i = 0; i < N-2; ++i) {
             if (Arr[i] == Arr[i+1] && Arr[i+1] == Arr[i+2]) {
                 return false;
             }
