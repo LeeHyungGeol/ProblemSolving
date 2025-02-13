@@ -15,7 +15,7 @@ public class Main {
     }
 
     private static void dfs(String number, int depth) {
-        if (isNotPossible(number) || Answer.length() != 0) {
+        if (Answer.length() != 0 || isNotPossible(number)) {
             return;
         }
         if (depth == N) {
