@@ -16,6 +16,10 @@ public class Main {
 
         dfs(0, 0);
 
+        if (Answer == Integer.MAX_VALUE) {
+            Answer = -1;
+        }
+
         System.out.println(Answer);
     }
 
@@ -24,17 +28,9 @@ public class Main {
             Answer = Math.min(Answer, jump);
             return;
         }
-        if (isNotPossible(curIndex)) {
-            Answer = -1;
-            return;
-        }
 
         for (int i = 1; i <= Arr[curIndex]; ++i) {
             dfs(curIndex + i, jump+1);
         }
-    }
-
-    private static boolean isNotPossible(int curIndex) {
-        return Arr[curIndex] == 0;
     }
 }
