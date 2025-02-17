@@ -51,16 +51,18 @@ public class Main {
             }
         }
 
-        for (int i = 0; i < selectedPoints.size()-1; ++i) {
-            int curDistance = getDistance(selectedPoints.get(i).x, selectedPoints.get(i).y, selectedPoints.get(selectedPoints.size()-1).x, selectedPoints.get(selectedPoints.size()-1).y);
-            maxDistance = Math.max(maxDistance, curDistance);
+        for (int i = 0; i < selectedPoints.size(); ++i) {
+            for (int j = i; j < selectedPoints.size(); ++j) {
+                int curDistance = getDistance(selectedPoints.get(i), selectedPoints.get(j));
+                maxDistance = Math.max(maxDistance, curDistance);
+            }
         }
 
         return maxDistance;
     }
 
-    private static int getDistance(int x1, int y1, int x2, int y2) {
-        return (Math.abs(x1-x2)*Math.abs(x1-x2)) + (Math.abs(y1-y2)*Math.abs(y1-y2));
+    private static int getDistance(Point p1, Point p2) {
+        return (Math.abs(p1.x-p2.x)*Math.abs(p1.x-p2.x)) + (Math.abs(p1.y-p2.y)*Math.abs(p1.y-p2.y));
     }
 
     static class Point implements Comparable<Point>{
