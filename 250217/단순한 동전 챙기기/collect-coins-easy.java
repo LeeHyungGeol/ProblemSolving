@@ -53,6 +53,9 @@ public class Main {
     }
 
     private static void dfs(char[][] arr, int x, int y, int ex, int ey, int curValue, int step, int count) {
+        if (count > 3) {
+            return;
+        }
         if (step >= dist[x][y][curValue][count]) {
             return;
         }
@@ -68,18 +71,11 @@ public class Main {
             int ny = y + DY[d];
             if (!isInRange(nx, ny)) continue;
 
-            int nextValue = curValue;
-            int nextCount = count;
-            
-            if (Character.isDigit(arr[nx][ny])) {
-                int digit = arr[nx][ny] - '0';
-                if (digit > curValue) {
-                    nextValue = digit;
-                    nextCount = count + 1;
-                }
-            }
-            if (nextCount <= 3) {
-                dfs(arr, nx, ny, ex, ey, nextValue, step + 1, nextCount);
+            if (Character.isDigit(arr[nx][ny]) && arr[nx][ny] - '0' > curValue) {
+                dfs(arr, nx, ny, ex, ey, arr[nx][ny] - '0', step + 1, count+1);
+
+            } else {
+                dfs(arr, nx, ny, ex, ey, curValue, step + 1, count);
             }
         }
     }
