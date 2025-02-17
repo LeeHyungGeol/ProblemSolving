@@ -20,8 +20,6 @@ public class Main {
             Points[i] = new Point(x,y);
         }
 
-        Arrays.sort(Points);
-
         dfs(0,0);
 
         System.out.println(Answer);
@@ -65,20 +63,12 @@ public class Main {
         return (Math.abs(p1.x-p2.x)*Math.abs(p1.x-p2.x)) + (Math.abs(p1.y-p2.y)*Math.abs(p1.y-p2.y));
     }
 
-    static class Point implements Comparable<Point>{
+    static class Point {
         int x, y;
 
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
-        }
-
-        @Override
-        public int compareTo(Point other) {
-            if (this.x == other.x) {
-                return this.y - other.y;
-            }
-            return this.x - other.x;
         }
     }    
 }
