@@ -42,7 +42,8 @@ public class Main {
     }
 
     private static int calculate() {
-        Deque<Point> selectedPoints = new ArrayDeque<>();
+        List<Point> selectedPoints = new ArrayList<>();
+        int maxDistance = -1;
 
         for (int i = 0; i < N; ++i) {
             if (Selected[i]) {
@@ -50,7 +51,12 @@ public class Main {
             }
         }
 
-        return getDistance(selectedPoints.peekFirst().x, selectedPoints.peekFirst().y, selectedPoints.peekLast().x, selectedPoints.peekLast().y);
+        for (int i = 0; i < selectedPoints.size()-1; ++i) {
+            int curDistance = getDistance(selectedPoints.get(i).x, selectedPoints.get(i).y, selectedPoints.get(selectedPoints.size()-1).x, selectedPoints.get(selectedPoints.size()-1).y);
+            maxDistance = Math.max(maxDistance, curDistance);
+        }
+
+        return maxDistance;
     }
 
     private static int getDistance(int x1, int y1, int x2, int y2) {
