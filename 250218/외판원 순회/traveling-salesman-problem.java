@@ -5,7 +5,6 @@ public class Main {
     static int N = 0, Answer = Integer.MAX_VALUE;
     static int[][] Matrix;
     static boolean[] Visited;
-    static int[] Selected;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -14,7 +13,6 @@ public class Main {
 
         Matrix = new int[N][N];
         Visited = new boolean[N];
-        Selected = new int[N];
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -41,7 +39,6 @@ public class Main {
         for (int col = 0; col < N; ++col) {
             if (Visited[col] || Matrix[row][col] == 0) continue;
             Visited[col] = true;
-            Selected[depth] = Matrix[row][col];
             dfs(depth+1, sum + Matrix[row][col], col);
             Visited[col] = false;
         }
