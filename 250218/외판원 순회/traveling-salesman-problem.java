@@ -31,10 +31,9 @@ public class Main {
 
     private static void dfs(int depth, int sum, int row) {
         if (depth == N-1) {
-            // for (int i = 0; i < N; ++i) {
-            //     System.out.print(Selected[i] + " ");
-            // }
-            // System.out.println(Matrix[row][0]);
+            if (Matrix[row][0] == 0) {
+                return;
+            }
             Answer = Math.min(Answer, sum+Matrix[row][0]);
             return;
         }
