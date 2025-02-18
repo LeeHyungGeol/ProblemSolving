@@ -33,15 +33,14 @@ public class Main {
 
         for (int i = 0; i < N; ++i) {
             if (VisitedRow[i]) continue;
+            VisitedRow[i] = true;
             for (int j = 0; j < N; ++j) {
                 if (VisitedCol[j]) continue;
-
-                VisitedRow[i] = true;
                 VisitedCol[j] = true;
                 dfs(depth+1, sum+Arr[i][j]);
-                VisitedRow[i] = false;
                 VisitedCol[j] = false;
             }
+            VisitedRow[i] = false;
         }
     }
 }
