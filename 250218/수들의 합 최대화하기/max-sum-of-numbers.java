@@ -31,16 +31,11 @@ public class Main {
             return;
         }
 
-        for (int i = 0; i < N; ++i) {
-            if (VisitedRow[i]) continue;
-            VisitedRow[i] = true;
             for (int j = 0; j < N; ++j) {
                 if (VisitedCol[j]) continue;
                 VisitedCol[j] = true;
-                dfs(depth+1, sum+Arr[i][j]);
+                dfs(depth+1, sum+Arr[depth][j]);
                 VisitedCol[j] = false;
             }
-            VisitedRow[i] = false;
-        }
     }
 }
