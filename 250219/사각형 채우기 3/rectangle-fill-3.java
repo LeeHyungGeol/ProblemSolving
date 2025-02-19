@@ -3,7 +3,7 @@ import java.util.*;
 public class Main {
     static final int MOD = 1_000_000_007;
     static int N = 0;
-    static int[] dp = new int[1_001];
+    static long[] dp = new long[1_001];
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
