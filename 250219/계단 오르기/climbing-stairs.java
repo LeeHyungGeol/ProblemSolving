@@ -10,15 +10,14 @@ public class Main {
 
         N = sc.nextInt();
 
-        dp = new int[N+1];
-
-        dp[1] = 1 % MOD;
+        dp[1] = 0 % MOD;
         dp[2] = 1 % MOD;
+        dp[3] = 1 % MOD;
 
-        for (int i = 3; i <= N; ++i) {
+        for (int i = 4; i <= N; ++i) {
             dp[i] = (dp[i-2] + dp[i-3]) % MOD;
         }
 
-        System.out.println(dp[N-1]);  
+        System.out.println(dp[N]);  
     }
 }
