@@ -28,7 +28,7 @@ public class Main {
             return dp[x][y];
         }
         if (x == N-1 && y == 0) {
-            return dp[N-1][0] = Matrix[N-1][0];
+            return dp[x][y] = Matrix[x][y];
         }
 
         int[] dx = {1,0};        
