@@ -34,7 +34,7 @@ public class Main {
         int[] dx = {1,0};        
         int[] dy = {0,-1};
 
-        int sum = 1_000_001;
+        int sum = Integer.MAX_VALUE;
         for (int d = 0; d < 2; ++d) {
             int nx = x + dx[d];
             int ny = y + dy[d];
