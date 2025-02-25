@@ -24,7 +24,8 @@ public class Main {
 
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                Answer = Math.max(Answer, findMaxMove(i,j,0));
+                // Answer = Math.max(Answer, findMaxMove(i,j,0));
+                findMaxMove(i,j,1);
             }
         }
 
@@ -35,10 +36,10 @@ public class Main {
         if (dp[x][y] != UNUSED) {
             return dp[x][y];
         }
-        // if (cannotMove(x,y)) {
-        //     Answer = Math.max(Answer, move);
-        //     return dp[x][y] = move;
-        // }
+        if (cannotMove(x,y)) {
+            Answer = Math.max(Answer, move);
+            return move;
+        }
 
         int maxMove = 1;
 
@@ -47,7 +48,7 @@ public class Main {
             int ny = y + dy[dir];
 
             if (isInRange(nx,ny) && Matrix[nx][ny] > Matrix[x][y]) {
-                maxMove = Math.max(maxMove, findMaxMove(nx, ny, move)+1);
+                maxMove = Math.max(maxMove, findMaxMove(nx, ny, move+1));
             }
         }
 
@@ -57,16 +58,18 @@ public class Main {
     }
 
     private static boolean cannotMove(int x, int y) {
+        boolean flag = true;
+
         for (int d = 0; d < 4; ++d) {
             int nx = x + dx[d];
             int ny = y + dy[d];
 
-            if (!(isInRange(nx,ny) && Matrix[nx][ny] > Matrix[x][y])) {
-                return true;
+            if (isInRange(nx,ny) && Matrix[nx][ny] > Matrix[x][y]) {
+                flag = false;
             }
         }
 
-        return false;
+        return flag;
     }
 
     private static boolean isInRange(int x, int y) {
