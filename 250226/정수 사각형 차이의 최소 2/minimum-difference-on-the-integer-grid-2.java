@@ -2,14 +2,12 @@ import java.util.*;
 
 public class Main {
     public static final int INT_MAX = Integer.MAX_VALUE;
-    public static final int MAX_R = 100;
-    public static final int MAX_N = 100;
     
     public static int N;
-    public static int[][] Matrix = new int[MAX_N][MAX_N];
+    public static int[][] Matrix;
     // dp[x][y][m]: (x,y)에 도달했을 때, 경로상의 최소값이 m인 상태에서 기록된 최소의 currMax 값을 저장
     // 미방문 상태는 -1로 초기화
-    public static int[][][] dp = new int[MAX_N][MAX_N][MAX_R + 1];
+    public static int[][][] dp;
 
      public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -53,7 +51,7 @@ public class Main {
             return currMax - currMin;
         }
         // 같은 (x,y)에서 currMin 상태로 이미 더 좋은(currMax가 낮은) 값으로 방문한 적이 있다면 가지치기
-        if (dp[x][y][currMin] != -1 && dp[x][y][currMin] <= currMax-currMin) {
+        if (dp[x][y][currMin] != -1 && dp[x][y][currMin] <= currMax) {
             return INT_MAX;
         }
         dp[x][y][currMin] = currMax;
