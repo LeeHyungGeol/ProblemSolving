@@ -54,7 +54,6 @@ public class Main {
         if (dp[x][y][currMin] != -1 && dp[x][y][currMin] <= currMax) {
             return INT_MAX;
         }
-        dp[x][y][currMin] = currMax;
         
         int ans = INT_MAX;
         // 오른쪽과 아래로 이동 (dx,dy 사용)
@@ -69,6 +68,8 @@ public class Main {
                 ans = Math.min(ans, dfs(nx, ny, newMin, newMax));
             }
         }
+
+        dp[x][y][currMin] = currMax;
 
         return ans;
     }
