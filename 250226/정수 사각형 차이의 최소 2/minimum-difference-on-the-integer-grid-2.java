@@ -48,6 +48,7 @@ public class Main {
     public static int dfs(int x, int y, int currMin, int currMax) {
         if (x == N - 1 && y == N - 1) {
             // 도착지에서는 이미 최소, 최대값이 결정되어 있으므로 바로 차이를 반환
+            dp[x][y][currMin] = currMax;
             return currMax - currMin;
         }
         // 같은 (x,y)에서 currMin 상태로 이미 더 좋은(currMax가 낮은) 값으로 방문한 적이 있다면 가지치기
@@ -69,7 +70,6 @@ public class Main {
             }
         }
 
-        dp[x][y][currMin] = currMax;
 
         return ans;
     }
