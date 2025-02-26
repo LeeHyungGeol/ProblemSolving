@@ -48,15 +48,15 @@ public class Main {
     public static int dfs(int x, int y, int currMin, int currMax) {
         if (x == N - 1 && y == N - 1) {
             // 도착지에서는 이미 최소, 최대값이 결정되어 있으므로 바로 차이를 반환
-            dp[x][y][currMin] = currMax;
             return currMax - currMin;
         }
         // 같은 (x,y)에서 currMin 상태로 이미 더 좋은(currMax가 낮은) 값으로 방문한 적이 있다면 가지치기
         if (dp[x][y][currMin] != -1 && dp[x][y][currMin] <= currMax) {
             return INT_MAX;
         }
+        dp[x][y][currMin] = currMax;
         
-        int ans = INT_MAX;
+        int answer = INT_MAX;
         // 오른쪽과 아래로 이동 (dx,dy 사용)
         int[] dx = {1, 0};
         int[] dy = {0, 1};
@@ -66,12 +66,11 @@ public class Main {
             if (isInRange(nx, ny)) {
                 int newMin = Math.min(currMin, Matrix[nx][ny]);
                 int newMax = Math.max(currMax, Matrix[nx][ny]);
-                ans = Math.min(ans, dfs(nx, ny, newMin, newMax));
+                answer = Math.min(answer, dfs(nx, ny, newMin, newMax));
             }
         }
 
-
-        return ans;
+        return answer;
     }
 
     private static boolean isInRange(int x, int y) {
