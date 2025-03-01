@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Main {
-    static int N = 0, Answer = 0;
+    static int N = 0, Answer = 1;
     static int[] Arr, dp;
 
     public static void main(String[] args) {
