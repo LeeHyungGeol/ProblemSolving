@@ -19,6 +19,7 @@ public class Main {
             Arr[i] = new Line(l,r);
         }
 
+        Arrays.sort(Arr);
         Arrays.fill(dp, 1);
 
         for (int i = 1; i < N; ++i) {
@@ -33,12 +34,20 @@ public class Main {
         System.out.println(Answer);
     }
 
-    static class Line {
+    static class Line implements Comparable<Line>{
         int l, r;
 
         public Line(int l, int r) {
             this.l = l;
             this.r = r;
+        }
+
+        @Override
+        public int compareTo(Line other) {
+            if (this.l == other.l) {
+                return this.r - other.r;
+            }
+            return this.l - other.l;
         }
     }
 }
