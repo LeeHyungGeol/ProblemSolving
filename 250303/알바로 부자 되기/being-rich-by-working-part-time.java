@@ -20,12 +20,13 @@ public class Main {
 
             Arr[i] = new Line(l,r,cost);
             dp[i] = cost;
-            Answer = Math.max(Answer, cost);
+            // Answer = Math.max(Answer, cost);
         }
 
-        // dp[0] = Arr[0].cost;
+        // Arr[0] = new Line(0,0,0);
+        dp[0] = Arr[0].cost;
 
-        for (int i = 1; i < N; ++i) {
+        for (int i = 0; i < N; ++i) {
             for (int j = 0; j < i; ++j) {
                 if (Arr[j].r < Arr[i].l) {
                     dp[i] = Math.max(dp[i], dp[j] + Arr[i].cost);
