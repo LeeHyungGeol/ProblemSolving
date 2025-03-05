@@ -20,7 +20,7 @@ public class Main {
         
         dp[0] = 0;
         
-        for (int i = 0; i <= m; i++) {
+        for (int i = 1; i <= m; i++) {
             for (int coin : coins) {
                 if (i-coin >= 0 && dp[i-coin] != NEG_INF) {
                     dp[i] = Math.max(dp[i], dp[i-coin] + 1);
