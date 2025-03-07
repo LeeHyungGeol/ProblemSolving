@@ -46,10 +46,7 @@ public class Main {
         for (int a = 0; a <= totalSum; a++) {
             if (dp[n][a][a]) {
                 // a=b
-                int cur = 2*a; // sum(A)+sum(B)
-                if (cur > max2A) {
-                    max2A = cur;
-                }
+                max2A = Math.max(max2A, 2*a);
             }
         }
 
