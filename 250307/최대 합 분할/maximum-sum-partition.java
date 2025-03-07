@@ -1,5 +1,7 @@
 import java.util.*;
 public class Main {
+    public static final int NEG_INF = -1000000000;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
@@ -10,46 +12,43 @@ public class Main {
 
         int totalSum = Arrays.stream(arr).sum();
 
-        // dp[i][a][b]:
-        //  첫 i개의 원소(인덱스 0..i-1)를 분배하여 A의 합=a, B의 합=b가 되는 것이 가능하면 true
-        boolean[][][] dp = new boolean[n + 1][totalSum + 1][totalSum + 1];
-
-        // 초기화: 아무것도 분배하지 않았을 때, A=0,B=0은 가능
-        dp[0][0][0] = true;
-
-        // DP 채우기
-        for (int i = 1; i <= n; i++) {
-            int val = arr[i - 1];  // i번째 원소(인덱스 i-1)
-            for (int a = 0; a <= totalSum; a++) {
-                for (int b = 0; b <= totalSum; b++) {
-                    if (!dp[i - 1][a][b]) continue;
-                    
-                    // 1) 원소를 C에 넣기 (A,B 합 변화 없음)
-                    dp[i][a][b] = true;
-                    
-                    // 2) 원소를 A에 넣기
-                    if (a + val <= totalSum) {
-                        dp[i][a + val][b] = true;
-                    }
-                    
-                    // 3) 원소를 B에 넣기
-                    if (b + val <= totalSum) {
-                        dp[i][a][b + val] = true;
-                    }
+        // offset : 음수 인덱스를 피하기 위해 totalSum을 offset으로 사용
+        int offset = totalSum;
+        // dp 배열의 가로 크기는 가능한 diff의 범위: [-totalSum, totalSum]을 0 ~ 2*totalSum으로 매핑
+        int dpWidth = 2 * totalSum + 1;
+        
+        // dp[i][d] : 첫 i개의 원소를 분배하여, (sum(A) - sum(B)) = d - offset일 때,
+        // 그룹 A의 합의 최대값을 저장 (불가능한 상태는 NEG_INF)
+        int[][] dp = new int[n + 1][dpWidth];
+        for (int i = 0; i <= n; i++) {
+            Arrays.fill(dp[i], NEG_INF);
+        }
+        // 초기 상태: 아직 아무 원소도 사용하지 않았을 때, diff = 0 (즉, d = offset)이고, 그룹 A의 합 = 0
+        dp[0][offset] = 0;
+        
+        // DP 전이: 각 원소를 A, B, C 중 하나에 배분
+        for (int i = 0; i < n; i++) {
+            int val = arr[i];
+            for (int d = 0; d < dpWidth; d++) {
+                if (dp[i][d] == NEG_INF) continue; // 해당 상태가 불가능하면 건너뜀
+                
+                // 1) 원소를 그룹 C에 넣는 경우: A와 B의 합은 변화하지 않음
+                dp[i + 1][d] = Math.max(dp[i + 1][d], dp[i][d]);
+                
+                // 2) 원소를 그룹 A에 넣는 경우:
+                // 그룹 A의 합이 val만큼 증가 → 새로운 diff = d + val (d+val <= dpWidth-1)
+                if (d + val < dpWidth) {
+                    dp[i + 1][d + val] = Math.max(dp[i + 1][d + val], dp[i][d] + val);
+                }
+                
+                // 3) 원소를 그룹 B에 넣는 경우:
+                // 그룹 B의 합이 val만큼 증가하므로, diff는 -val 만큼 감소 → 새로운 diff = d - val (d - val >= 0)
+                if (d - val >= 0) {
+                    dp[i + 1][d - val] = Math.max(dp[i + 1][d - val], dp[i][d]);
                 }
             }
         }
 
-        // 이제 dp[n][a][b]가 true인 (a,b) 중에서 a=b를 만족하는
-        // 가장 큰 a+b = 2a를 찾는다.
-        int max2A = -1;  // 2*sum(A)의 최댓값
-        for (int a = 0; a <= totalSum; a++) {
-            if (dp[n][a][a]) {
-                // a=b
-                max2A = Math.max(max2A, 2*a);
-            }
-        }
-
-        System.out.println(max2A/2);
+        System.out.println(dp[n][offset]);
     }
 }
