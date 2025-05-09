@@ -59,19 +59,19 @@ class FileName implements Comparable<FileName> {
     
     @Override
     public int compareTo(FileName other) {
-//         if (this.head.compareToIgnoreCase(other.head) == 0) {
-//             return Integer.compare(Integer.parseInt(this.number), Integer.parseInt(other.number));
-//         }
-        
-//         return this.head.compareToIgnoreCase(other.head);
-        
-        // HEAD 비교 (대소문자 구분 없이)
-            int headComparison = this.head.compareToIgnoreCase(other.head);
-            if (headComparison != 0) {
-                return headComparison;
-            }
-
-            // NUMBER 비교
+        if (this.head.compareToIgnoreCase(other.head) == 0) {
             return Integer.compare(this.number, other.number);
+        }
+        
+        return this.head.compareToIgnoreCase(other.head);
+        
+//         // HEAD 비교 (대소문자 구분 없이)
+//             int headComparison = this.head.compareToIgnoreCase(other.head);
+//             if (headComparison != 0) {
+//                 return headComparison;
+//             }
+
+//             // NUMBER 비교
+//             return Integer.compare(this.number, other.number);
     }
 }
