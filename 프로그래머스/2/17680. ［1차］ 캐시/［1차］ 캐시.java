@@ -1,29 +1,40 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int cacheSize, String[] cities) {
-        int answer = 0;
-        List<String> list = new LinkedList<>();
-        
-        for (int i = 0; i < cities.length; ++i) {
-            String city = cities[i].toLowerCase();
-            int index = list.indexOf(city);
+    private List<String> cache = new LinkedList<>();
+    private int answer = 0;
+    
+    public int solution(int cacheSize, String[] cities) {        
+        for (String city : cities) {
+            String c = city.toLowerCase();
             
-            if (index != -1) {
-                answer += 1;
-                list.remove(index);
-                list.add(city);
+            if (isCacheHit(c)) {
+                cacheHit(c);
             } else {
-                if (!list.isEmpty() && list.size() >= cacheSize) {
-                    list.remove(0);
-                }
-                if (cacheSize != 0) {
-                    list.add(city);                     
-                }
-                answer += 5;
+                cacheMiss(c, cacheSize);
             }
         }
         
         return answer;
+    }
+    
+    private void cacheHit(String city) {
+        String removed = cache.remove(cache.indexOf(city));
+        cache.add(removed);
+        ++answer;
+    }
+    
+    private void cacheMiss(String city, int cacheSize) {
+        if (!cache.isEmpty() && cache.size() >= cacheSize) {
+            cache.remove(0);
+        }
+        if (cacheSize > 0) {
+            cache.add(city);            
+        }
+        answer += 5;
+    }
+    
+    private boolean isCacheHit(String city) {
+        return cache.contains(city);
     }
 }
