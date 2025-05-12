@@ -15,19 +15,10 @@ class Solution {
         while (true) {
             nothingToRemove = true;
             
-            for (int i = 0; i < M-1; ++i) {
-                for (int j = 0; j < N-1; ++j) {
-                    if (Board[i][j] == 0) continue;
-                    if (is4BlocksAreSame(i,j)) {
-                        checkBlocks(i,j);
-                    }
-                }
-            }
-            
+            checkIf4BlocksAreSame();
             removeBlocks();
             down();
             initCheck();
-            
             
             if (nothingToRemove) {
                 break;
@@ -35,6 +26,17 @@ class Solution {
         }
         
         return answer;
+    }
+    
+    private void checkIf4BlocksAreSame() {
+        for (int i = 0; i < M-1; ++i) {
+                for (int j = 0; j < N-1; ++j) {
+                    if (Board[i][j] == 0) continue;
+                    if (is4BlocksAreSame(i,j)) {
+                        checkBlocks(i,j);
+                    }
+                }
+            }
     }
     
     private void checkBlocks(int x, int y) {
