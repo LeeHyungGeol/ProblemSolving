@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    private List<String> cache = new LinkedList<>();
+    private List<String> cache = new ArrayList<>();
     private int answer = 0;
     
     public int solution(int cacheSize, String[] cities) {        
