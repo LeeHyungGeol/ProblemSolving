@@ -4,7 +4,7 @@ class Solution {
     public String solution(String p) {
         String answer = "";
         
-        if (p.isEmpty()) {
+        if ("".equals(p)) {
             return "";
         }
         
@@ -33,11 +33,11 @@ class Solution {
         }
     }
     
-    private int splitToBalancedString(String w) {
+    private int splitToBalancedString(String s) {
         int count = 0, index = 0;
         
-        for (int i = 0; i < w.length(); ++i) {
-            if (w.charAt(i) == '(') {
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == '(') {
                 ++count;
             }
             else {
@@ -52,20 +52,21 @@ class Solution {
         return index;
     }
     
-    private boolean isProper(String w) {
+    private boolean isProper(String s) {
         int count = 0;
         
-        for (int i = 0; i < w.length(); ++i) {
-            if (w.charAt(i) == '(') {
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
                 ++count;
             }
             else {
-                --count;
-                if (count == 0) {
-                    return true;
-                }
+                --count;   
+            }
+            if (count < 0) {
+                return false;
             }
         }
-        return false;
+        
+        return true;
     }
 }
