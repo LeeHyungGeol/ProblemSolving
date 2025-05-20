@@ -1,85 +1,82 @@
 import java.util.*;
 
 class Solution {
-    static class Node {
-        private int index;
-        private int x;
-        private int y;
-        private Node left;
-        private Node right;
+    
+    class Node implements Comparable<Node>{
+        
+        int index, x, y;
+        Node left, right;
         
         public Node(int index, int x, int y) {
             this.index = index;
             this.x = x;
             this.y = y;
         }
+        
+        @Override
+        public int compareTo(Node other) {
+            if (this.y == other.y) {
+                return Integer.compare(this.x, other.x);
+            }
+            return Integer.compare(other.y, this.y);
+        }
     }
     
-    Node Root;
-    private static List<Integer> preOrderNodes = new ArrayList<>();
-    private static List<Integer> postOrderNodes = new ArrayList<>();
+    private Node Root;
+    private List<Integer> Preorders = new ArrayList<>();
+    private List<Integer> Postorders = new ArrayList<>();
     
     public int[][] solution(int[][] nodeinfo) {
+        int[][] answer = new int[2][];
         List<Node> nodes = new ArrayList<>();
         
         for (int i = 0; i < nodeinfo.length; ++i) {
             nodes.add(new Node(i+1, nodeinfo[i][0], nodeinfo[i][1]));
         }
         
-        Collections.sort(nodes, new Comparator<Node>(){
-            public int compare(Node a, Node b) {
-                if (a.y == b.y) {
-                    return a.x - b.x;
-                }
-                return b.y - a.y;
-            }
-        });
+        Collections.sort(nodes);
         
         Root = nodes.get(0);
         for (int i = 1; i < nodes.size(); ++i) {
-            insert(Root, nodes.get(i));
+            construct(Root, nodes.get(i));
         }
         
-        preOrder(Root);
-        postOrder(Root);
+        preorder(Root);
+        postorder(Root);
         
-        return new int[][]{
-            preOrderNodes.stream().mapToInt(Integer::intValue).toArray(),
-            postOrderNodes.stream().mapToInt(Integer::intValue).toArray(),
-        };
+        answer[0] = Preorders.stream().mapToInt(Integer::intValue).toArray();
+        answer[1] = Postorders.stream().mapToInt(Integer::intValue).toArray();
+        
+        return answer;
     }
     
-    private void insert(Node parent, Node child) {
+    private void construct(Node parent, Node child) {
         if (parent.x > child.x) {
             if (parent.left == null) {
                 parent.left = child;
             } else {
-                insert(parent.left, child);
+                construct(parent.left, child);
             }
         } else {
             if (parent.right == null) {
                 parent.right = child;
             } else {
-                insert(parent.right, child);
+                construct(parent.right, child);
             }
         }
     }
     
-    private void preOrder(Node current) {
-        if (current == null) {
-            return;
-        }
-        preOrderNodes.add(current.index);
-        preOrder(current.left);
-        preOrder(current.right);
+    private void preorder(Node root) {
+        if (root == null) return;
+        Preorders.add(root.index);
+        preorder(root.left);
+        preorder(root.right);
     }
     
-    private void postOrder(Node current) {
-        if (current == null) {
-            return;
-        }
-        postOrder(current.left);
-        postOrder(current.right);
-        postOrderNodes.add(current.index);
+    private void postorder(Node root) {
+        if (root == null) return;
+        postorder(root.left);
+        postorder(root.right);
+        Postorders.add(root.index);
     }
 }
