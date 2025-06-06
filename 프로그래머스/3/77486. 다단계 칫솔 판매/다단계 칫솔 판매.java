@@ -23,13 +23,13 @@ class Solution {
     }
     
     
-    private void getProfit(String seller, int amount) {
-        if ("-".equals(seller) || amount == 0) {
+    private void getProfit(String seller, int profit) {
+        if ("-".equals(seller) || profit == 0) {
             return;
         }
         
-        int profit = (int) (amount * 0.1);
-        amounts.put(seller, amounts.getOrDefault(seller, 0) + amount-profit);
-        getProfit(tree.getOrDefault(seller, "-"), profit);
+        int remain = (int) (profit * 0.1);
+        amounts.put(seller, amounts.getOrDefault(seller, 0) + profit-remain);
+        getProfit(tree.getOrDefault(seller, "-"), remain);
     }
 }
