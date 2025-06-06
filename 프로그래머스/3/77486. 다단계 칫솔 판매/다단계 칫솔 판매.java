@@ -1,35 +1,35 @@
 import java.util.*;
 
 class Solution {
+    private Map<String, String> tree = new HashMap<>();
+    private Map<String, Integer> amounts = new HashMap<>();
+        
     public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
         int[] answer = new int[enroll.length];
-        Map<String, String> tree = new HashMap<>();
-        Map<String, Integer> results = new HashMap<>();
         
         for (int i = 0; i < enroll.length; ++i) {
-            String current = enroll[i];
-            String next = referral[i];
-            tree.put(current, next);
-            results.put(current, 0);
+            tree.put(enroll[i], referral[i]);
         }
         
         for (int i = 0; i < seller.length; ++i) {
-            dfs(seller[i], amount[i]*100, tree, results);
-        }
-        
+            getProfit(seller[i], amount[i]*100);
+        } 
+         
         for (int i = 0; i < enroll.length; ++i) {
-            answer[i] = results.get(enroll[i]);
+            answer[i] = amounts.getOrDefault(enroll[i], 0);
         }
         
         return answer;
     }
     
-    private void dfs(String seller, int amount, Map<String, String> tree, Map<String, Integer> results) {
-        if (seller.equals("-") || amount == 0) {
+    
+    private void getProfit(String seller, int amount) {
+        if ("-".equals(seller) || amount == 0) {
             return;
         }
-        int rest = amount / 10;
-        results.put(seller, results.get(seller) + (amount - rest));
-        dfs(tree.get(seller), rest, tree, results);
+        
+        int profit = (int) (amount * 0.1);
+        amounts.put(seller, amounts.getOrDefault(seller, 0) + amount-profit);
+        getProfit(tree.getOrDefault(seller, "-"), profit);
     }
 }
