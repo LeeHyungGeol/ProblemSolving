@@ -1,22 +1,18 @@
-import java.util.*;
-
 class Solution {
     public int maxDifference(String s) {
-        Map<Character, Integer> counter = new HashMap<>();
-
+        int[] mpp = new int[26];
+        int maxi = 0, mini = s.length();
         for (char c : s.toCharArray()) {
-            counter.put(c, counter.getOrDefault(c, 0) + 1);
+            mpp[c - 'a']++;
         }
-
-        int oddMax = 0, evenMin = Integer.MAX_VALUE;
-        for (Map.Entry<Character, Integer> entry : counter.entrySet()) {
-            if (entry.getValue() % 2 != 0) {
-                oddMax = Math.max(entry.getValue(), oddMax);
-            } else {
-                evenMin = Math.min(entry.getValue(), evenMin);
+        for (int i = 0; i < 26; i++) {
+            if (mpp[i] % 2 != 0) {
+                maxi = Math.max(maxi, mpp[i]);
+            }
+            if (mpp[i] % 2 == 0 && mpp[i] > 0) {
+                mini = Math.min(mini, mpp[i]);
             }
         }
-
-        return oddMax-evenMin;
+        return maxi - mini;
     }
 }
