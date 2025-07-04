@@ -6,34 +6,26 @@ public class Solution {
             return answer;
         }
 
-        Map<Character, Integer> pattern = new HashMap<>();
-        for(char c : p.toCharArray()){
-            pattern.put(c, pattern.getOrDefault(c, 0) + 1);
+        int[] sPattern = new int[26];
+        int[] pPattern = new int[26];
+        int left = 0, right = 0;
+
+        for (char c : p.toCharArray()) {
+            ++pPattern[c-'a'];
         }
-        int counter = pattern.size(), left = 0, right = 0;
-        
-        while(right < s.length()){
-            char c = s.charAt(right);
-            if(pattern.containsKey(c)){
-                pattern.put(c, pattern.get(c)-1);
-                if (pattern.get(c) == 0) {
-                    --counter;
-                }
-            }
-            ++right;
-            
-            while(counter == 0){
-                char tempc = s.charAt(left);
-                if(pattern.containsKey(tempc)){
-                    pattern.put(tempc, pattern.get(tempc) + 1);
-                    if(pattern.get(tempc) > 0){
-                        ++counter;
-                    }
-                }
-                if(right-left == p.length()){
+
+        while (right < s.length()) {
+            ++sPattern[s.charAt(right)-'a'];
+
+            if ((right-left+1) < p.length()) {
+                ++right;
+            } else {
+                if (Arrays.equals(sPattern, pPattern)) {
                     answer.add(left);
                 }
+                --sPattern[s.charAt(left)-'a'];
                 ++left;
+                ++right;
             }
         }
 
