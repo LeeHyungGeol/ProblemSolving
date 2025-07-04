@@ -1,13 +1,13 @@
 public class Solution {
-    public List<Integer> findAnagrams(String s, String t) {
+    public List<Integer> findAnagrams(String s, String p) {
         List<Integer> answer = new ArrayList<>();
 
-        if(t.length()> s.length()) {
+        if(p.length()> s.length()) {
             return answer;
         }
 
         Map<Character, Integer> pattern = new HashMap<>();
-        for(char c : t.toCharArray()){
+        for(char c : p.toCharArray()){
             pattern.put(c, pattern.getOrDefault(c, 0) + 1);
         }
         int counter = pattern.size(), left = 0, right = 0;
@@ -30,7 +30,7 @@ public class Solution {
                         ++counter;
                     }
                 }
-                if(right-left == t.length()){
+                if(right-left == p.length()){
                     answer.add(left);
                 }
                 ++left;
