@@ -1,64 +1,52 @@
 import java.util.*;
 
 class Solution {
-    static class PlayCount implements Comparable<PlayCount>{
-        private String genre;
-        private int count;
-        private int index;
+    static class PlayCount implements Comparable<PlayCount> {
+        String genre;
+        int play;
+        int number;
         
-        public PlayCount (String genre, int count) {
+        public PlayCount (String genre, int play) {
             this.genre = genre;
-            this.count = count;
+            this.play = play;
         }
         
-        public PlayCount(int count, int index) {
-            this.count = count;
-            this.index = index;
+        public PlayCount(int play, int number) {
+            this.play = play;
+            this.number = number;
         }
         
-        public String getGenre() {
-            return this.genre;
-        }
-        
-        public int getCount() {
-            return this.count;
-        }
-        
-        public int getIndex() {
-            return this.index;
-        }
-        
-        public int compareTo(PlayCount that) {
-            if (this.getCount() == that.getCount()) {
-                return this.getIndex() - that.getIndex();
+        @Override
+        public int compareTo(PlayCount other) {
+            if (this.play == other.play) {
+                return Integer.compare(this.number, other.number);
             }
-            return that.getCount() - this.getCount();
+            return Integer.compare(other.play, this.play);
         }
     }
     
     public int[] solution(String[] genres, int[] plays) {
         List<Integer> answer = new ArrayList<>();
-        Map<String, Integer> totalPlays = new HashMap<>();
-        Map<String, Set<PlayCount>> playCounts = new HashMap<>();
+        Map<String, Set<PlayCount>> playCounter = new HashMap<>();
+        Map<String, Integer> totalCountPerGenre = new HashMap<>();
         
         for (int i = 0; i < genres.length; ++i) {
-            totalPlays.put(genres[i], totalPlays.getOrDefault(genres[i], 0) + plays[i]);
-            playCounts.computeIfAbsent(genres[i], k -> new TreeSet<>()).add(new PlayCount(plays[i], i));
+            playCounter.computeIfAbsent(genres[i], k -> new TreeSet<>()).add(new PlayCount(plays[i], i));
+            totalCountPerGenre.put(genres[i], totalCountPerGenre.getOrDefault(genres[i], 0) + plays[i]);  
         }
         
         List<PlayCount> temp = new ArrayList<>();
-        
-        for (String genre : totalPlays.keySet()) {
-            temp.add(new PlayCount(genre, totalPlays.get(genre)));
+        for (Map.Entry<String, Integer> entry : totalCountPerGenre.entrySet()) {
+            temp.add(new PlayCount(entry.getKey(), entry.getValue()));
         }
         
         Collections.sort(temp);
-        
+                                                                             
         for (PlayCount key : temp) {
             int count = 0;
-            for (PlayCount playCount : playCounts.get(key.getGenre())) {
-                if (count == 2) break;
-                answer.add(playCount.getIndex());
+            for (PlayCount playCount : playCounter.get(key.genre)) {
+                if (count > 1) break;
+                answer.add(playCount.number);
                 ++count;
             }
         }
