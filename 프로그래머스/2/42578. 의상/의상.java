@@ -3,16 +3,16 @@ import java.util.*;
 class Solution {
     public int solution(String[][] clothes) {
         int answer = 1;
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> clothCounter = new HashMap<>();
         
-        for (String[] cloth : clothes) {
-            map.put(cloth[1], map.getOrDefault(cloth[1], 0) + 1);
+        for (int i = 0; i < clothes.length; ++i) {
+            clothCounter.put(clothes[i][1], clothCounter.getOrDefault(clothes[i][1], 0)+1);
         }
         
-        for (String clothType : map.keySet()) {
-            answer *= map.get(clothType) + 1;
+        for (int count : clothCounter.values()) {
+            answer *= count+1;
         }
         
-        return answer - 1;
+        return answer-1;
     }
 }
