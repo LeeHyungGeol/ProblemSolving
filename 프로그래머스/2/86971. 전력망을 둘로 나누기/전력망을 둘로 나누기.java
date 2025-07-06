@@ -1,47 +1,45 @@
 import java.util.*;
 
 class Solution {
-    private static ArrayList<ArrayList<Integer>> graph; 
     private static int answer = Integer.MAX_VALUE;
+    private static List<List<Integer>> Graph = new ArrayList<>();
     
     public int solution(int n, int[][] wires) {
-        for (int i = 0; i < n; ++i) {
-            dfsAll(i, n, wires);
+        for (int remove = 0; remove < n; ++remove) {
+            dfsAll(remove, n, wires);
         }
         
         return answer;
     }
     
-    private void dfsAll(int removeIndex, int n, int[][] wires) {
-        boolean[] visited = new boolean[n];
-        
-        graph = new ArrayList<>();
+    private void dfsAll(int remove, int n, int[][] wires) {
+        Graph = new ArrayList<>();
         for (int i = 0; i < n; ++i) {
-            graph.add(new ArrayList<>());
+            Graph.add(new ArrayList<>());
         }
         
         for (int i = 0; i < wires.length; ++i) {
-            if (i == removeIndex) continue;
-            graph.get(wires[i][0]-1).add(wires[i][1]-1);
-            graph.get(wires[i][1]-1).add(wires[i][0]-1);
+            if (i == remove) continue;
+            Graph.get(wires[i][0]-1).add(wires[i][1]-1);
+            Graph.get(wires[i][1]-1).add(wires[i][0]-1);
         }
         
-        int cnt = dfs(1, visited);
+        boolean[] visited = new boolean[n];
+        int count = countConnectedComponents(1, visited);
+        int diff = Math.abs(count - (n-count));
         
-        int diff = Math.abs(cnt - (n - cnt));
         answer = Math.min(answer, diff);
     }
     
-    private int dfs(int start, boolean[] visited) {
-        int cnt = 1;
+    private int countConnectedComponents(int start, boolean[] visited) {
+        int count = 1;
         visited[start] = true;
         
-        for (int i = 0; i < graph.get(start).size(); ++i) {
-            int next = graph.get(start).get(i);
-            if (visited[next]) continue;
-            cnt += dfs(next, visited);
+        for (int i = 0; i < Graph.get(start).size(); ++i) {
+            if (visited[Graph.get(start).get(i)]) continue;
+            count += countConnectedComponents(Graph.get(start).get(i), visited);
         }
         
-        return cnt;
+        return count;
     }
 }
