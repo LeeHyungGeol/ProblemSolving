@@ -1,23 +1,20 @@
-import java.util.*;
-
 class Solution {
+    private static int answer = 0;
     public int solution(int k, int[][] dungeons) {
-        int n = dungeons.length;
-
-        Arrays.sort(dungeons, (a, b) -> (a[0] - a[1]) - (b[0] - b[1]));
-
-        int[][] dp = new int[n + 1][k + 1];
-
-        for (int i = 1; i <= n; i++) {
-            for (int r = 1; r <= k; r++) {
-                if (dungeons[i - 1][0] > r) {
-                    dp[i][r] = dp[i - 1][r];
-                } else {
-                    dp[i][r] = Math.max(dp[i - 1][r], 1 + dp[i - 1][r - dungeons[i - 1][1]]);
-                }
+        backtracking(dungeons, new boolean[dungeons.length], 0, k);
+        
+        return answer;
+    }
+    
+    private void backtracking(int[][] dungeons, boolean[] visited, int count, int k) {
+        answer = Math.max(answer, count);
+        
+        for (int i = 0; i < dungeons.length; ++i) {
+            if (!visited[i] && k >= dungeons[i][0]) {
+                visited[i] = true;
+                backtracking(dungeons, visited, count+1, k-dungeons[i][1]);
+                visited[i] = false;
             }
         }
-
-        return dp[n][k];
     }
 }
