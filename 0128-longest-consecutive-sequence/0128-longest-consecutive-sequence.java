@@ -9,11 +9,11 @@ class Solution {
             int answer = 0;
             for(int n : set) {
                 if(!set.contains(n - 1)) {  
-                    int count = n + 1;
-                    while(set.contains(count)) {
-                        ++count;
+                    int next = n + 1;
+                    while(set.contains(next)) {
+                        ++next;
                     }
-                    answer = Math.max(answer, count-n);
+                    answer = Math.max(answer, next-n);
                 }
             }
             
