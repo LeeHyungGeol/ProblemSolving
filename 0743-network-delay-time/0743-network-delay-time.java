@@ -1,34 +1,50 @@
+import java.util.*;
+
 class Solution {
-    public int networkDelayTime(int[][] times, int N, int K) {
-        Map<Integer, Map<Integer,Integer>> map = new HashMap<>();
-        for(int[] time : times){
-            map.putIfAbsent(time[0], new HashMap<>());
-            map.get(time[0]).put(time[1], time[2]);
+    private static final int INF = Integer.MAX_VALUE;
+    private List<List<int[]>> Graph;
+    
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dists = new int[n+1];
+        Arrays.fill(dists, INF);
+
+        Graph = new ArrayList<>();
+        for (int i = 0; i <= n; ++i) {
+            Graph.add(new ArrayList<>());
         }
-        
-        //distance, node into pq
+
+        for (int[] time : times) {
+            int u = time[0];
+            int v = time[1];
+            int c = time[2];
+            Graph.get(u).add(new int[]{v, c});
+        }
+
         Queue<int[]> pq = new PriorityQueue<>((a,b) -> (a[0] - b[0]));
-        
-        pq.add(new int[]{0, K});
-        
-        boolean[] visited = new boolean[N+1];
-        int res = 0;
-        
-        while(!pq.isEmpty()){
-            int[] cur = pq.remove();
-            int curNode = cur[1];
-            int curDist = cur[0];
-            if(visited[curNode]) continue;
-            visited[curNode] = true;
-            res = curDist;
-            N--;
-            if(map.containsKey(curNode)){
-                for(int next : map.get(curNode).keySet()){
-                    pq.add(new int[]{curDist + map.get(curNode).get(next), next});
+
+        pq.offer(new int[]{0,k});
+        dists[k] = 0;
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int dist = cur[0], node = cur[1];
+            if (dist > dists[node]) continue;
+
+            for (int[] edge : Graph.get(node)) {
+                int next = edge[0], w = edge[1];
+                int nd = dist + w;
+                if (nd < dists[next]) {
+                    dists[next] = nd;
+                    pq.offer(new int[]{nd, next});
                 }
             }
         }
-        return N == 0 ? res : -1;
-            
+
+        int answer = 0;
+        for (int i = 1; i <= n; ++i) {
+            if (dists[i] == INF) return -1;
+            answer = Math.max(answer, dists[i]);
+        }
+        return answer;
     }
 }
