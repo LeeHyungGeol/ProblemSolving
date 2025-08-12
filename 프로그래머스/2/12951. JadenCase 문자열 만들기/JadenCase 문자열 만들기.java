@@ -9,15 +9,11 @@ class Solution {
                 isFirst = true;
             } else {
                 if (isFirst) {
-                    if (Character.isLetter(c)) {
-                        sb.append(Character.toUpperCase(c));
-                    } else {
-                        sb.append(c);
-                    }
-                    isFirst = false;
+                    sb.append(Character.toUpperCase(c));
                 } else {
                     sb.append(Character.toLowerCase(c));
                 }
+                isFirst = false;
             }
         }
         
