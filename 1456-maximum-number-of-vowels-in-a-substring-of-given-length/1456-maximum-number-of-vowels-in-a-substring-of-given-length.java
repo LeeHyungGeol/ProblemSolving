@@ -10,7 +10,7 @@ class Solution {
                 ++vowelCount;
             }
 
-            if (count == k) {
+            while (count == k) {
                 answer = Math.max(answer, vowelCount);
 
                 if (s.charAt(left) == 'a' || s.charAt(left) == 'e' || s.charAt(left) == 'i' || s.charAt(left) == 'o' || s.charAt(left) == 'u') {
