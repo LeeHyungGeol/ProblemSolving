@@ -12,7 +12,7 @@ class Solution {
             while (zeroCount > k) {
                 if (nums[left++] == 0) {
                     --zeroCount;
-                }    
+                }
             }
 
             answer = Math.max(answer, right-left+1);
