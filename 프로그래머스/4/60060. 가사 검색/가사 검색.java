@@ -1,66 +1,67 @@
 import java.util.*;
 
-
 class Solution {
-    class Trie {
-        Trie[] next = new Trie[26];
-        int children = 0;
+    class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        int count = 0;
     }
-   
-    public int[] solution(String[] words, String[] queries) {
-        Map<Integer, Trie> map = new HashMap<>();
-        Map<Integer, Trie> revMap = new HashMap<>();
-       
-        for (String w : words) {
-            map.putIfAbsent(w.length(), new Trie());
-            revMap.putIfAbsent(w.length(), new Trie());
-            buildTrie(w, map.get(w.length()));
-            buildTrie(new StringBuilder(w).reverse().toString(), revMap.get(w.length()));
+    
+    class Trie {
+        TrieNode root = new TrieNode();
+        
+        void insert(String word) {
+            TrieNode node = root;
+            node.count++; 
+            for (char c : word.toCharArray()) {
+                int idx = c - 'a';
+                if (node.children[idx] == null) {
+                    node.children[idx] = new TrieNode();
+                }
+                node = node.children[idx];
+                node.count++;
+            }
         }
-       
+        
+        int count(String q) {
+            TrieNode node = root;
+            for (char c : q.toCharArray()) {
+                if (c == '?') break; 
+                int idx = c - 'a';
+                if (node.children[idx] == null) return 0;
+                node = node.children[idx];
+            }
+            return node.count;
+        }
+    }
+    
+    public int[] solution(String[] words, String[] queries) {
+        Map<Integer, Trie> frontTries = new HashMap<>();
+        Map<Integer, Trie> backTries = new HashMap<>();
+        
+        for (String word : words) {
+            int len = word.length();
+            frontTries.putIfAbsent(len, new Trie());
+            backTries.putIfAbsent(len, new Trie());
+            
+            frontTries.get(len).insert(word);
+            backTries.get(len).insert(new StringBuilder(word).reverse().toString());
+        }
+        
         int[] answer = new int[queries.length];
         for (int i = 0; i < queries.length; i++) {
-            String q = queries[i];
-            int wc = 0;
-           
-            if (map.containsKey(q.length())) {
-                if (q.charAt(0) == '?') {
-                    wc = count(new StringBuilder(q).reverse().toString(), revMap.get(q.length()), 0);
-                } else {
-                    wc = count(q, map.get(q.length()), 0);
-                }
+            String query = queries[i];
+            int len = query.length();
+            
+            if (query.charAt(0) == '?') {
+                Trie trie = backTries.get(len);
+                answer[i] = trie == null ? 0 : 
+                    trie.count(new StringBuilder(query).reverse().toString());
+            } else {
+                Trie trie = frontTries.get(len);
+                answer[i] = trie == null ? 0 : trie.count(query);
             }
-            answer[i] = wc;
         }
-       
+        
         return answer;
     }
-   
-    private int count(String s, Trie node, int idx) {
-        char c = s.charAt(idx);
-       
-        if (c == '?') {
-            return node.children;
-        }
-       
-        if (node.next[c - 'a'] == null) {
-            return 0;
-        }
-       
-        return count(s, node.next[c - 'a'], idx + 1);
-    }
-   
-    private void buildTrie(String w, Trie node) {
-        node.children++;
-       
-        for (char c : w.toCharArray()) {
-            if (node.next[c - 'a'] == null) {
-                node.next[c - 'a'] = new Trie();
-            }
-           
-            node = node.next[c - 'a'];
-            node.children++;
-        }
-    }
 }
-
