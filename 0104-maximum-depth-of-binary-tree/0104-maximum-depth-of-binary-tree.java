@@ -18,29 +18,10 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        
-        Queue<TreeNode> q = new LinkedList<>();
-        int answer = 0;
 
-        q.offer(root);
+        int leftHeight = maxDepth(root.left);
+        int rightHeight = maxDepth(root.right);
 
-        while (!q.isEmpty()) {
-            int size = q.size();
-            ++answer;
-
-            for (int i = 0; i < size; ++i) {
-                TreeNode curr = q.poll();
-
-                if (curr.left != null) {
-                    q.offer(curr.left);
-                }
-
-                if (curr.right != null) {
-                    q.offer(curr.right);
-                }
-            }
-        }
-
-        return answer;
+        return Math.max(leftHeight, rightHeight)+1;
     }
 }
